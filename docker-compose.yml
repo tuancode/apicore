@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+    httpd:
+        image: atdock/httpd:2.4
+        container_name: apicore_httpd
+        links:
+            - php
+        volumes:
+            - .:/usr/local/apache2/htdocs:rw
+            - ./.docker/httpd/default.conf:/usr/local/apache2/conf.d/default.conf
+        ports:
+            - "8080:80"
+
+    php:
+        image: atdock/php:7.1
+        container_name: apicore_php
+        links:
+            - mysql
+        volumes:
+            - .:/var/www:rw
+            - ./.docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
+
+    mysql:
+        image: atdock/mysql:5.7
+        container_name: apicore_mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: apicore
+            MYSQL_USER: apicore
+            MYSQL_PASSWORD: apicore
+        volumes:
+          - db-data:/var/lib/mysql
+
+volumes:
+  db-data: {}
