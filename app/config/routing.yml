@@ -1,14 +1,19 @@
-app:
-    resource: '@AppBundle/Controller/'
-    type: annotation
-
-fos_user:
-    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+homepage:
+    path: /
+    methods: GET
+    defaults: { _controller: AppBundle:Default:index }
 
 api_doc:
     path: /doc
     methods: GET
     defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
+
+api:
+    resource: "@AppBundle/Resources/config/routing-v1.yml"
+    prefix:   /api/v1
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
 api_login_check:
     path: /auth/v1/login_check
