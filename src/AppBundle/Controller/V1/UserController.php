@@ -3,11 +3,12 @@
 namespace AppBundle\Controller\V1;
 
 use AppBundle\Entity\User;
+use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Routing\Annotation\Route;
 
-class UserController
+class UserController extends FOSRestController
 {
     /**
      * Get the specified user information.
@@ -33,7 +34,7 @@ class UserController
      *
      * @param User $user
      */
-    public function getUser(User $user)
+    public function getAction(User $user)
     {
         // ...
     }

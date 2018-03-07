@@ -10,12 +10,12 @@ services:
             - .:/usr/local/apache2/htdocs:rw
             - ./.docker/httpd/default.conf:/usr/local/apache2/conf.d/default.conf
         ports:
-            - "8080:80"
+            - "8001:80"
 
     php:
         image: atdock/php:7.1
         container_name: apicore_php
-        links:
+        depends_on:
             - mysql
         volumes:
             - .:/var/www:rw
@@ -29,8 +29,3 @@ services:
             MYSQL_DATABASE: apicore
             MYSQL_USER: apicore
             MYSQL_PASSWORD: apicore
-        volumes:
-          - db-data:/var/lib/mysql
-
-volumes:
-  db-data: {}
