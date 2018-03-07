@@ -1,14 +1,14 @@
 #!/bin/sh
 # Refresh source code
-composer install  #--no-interaction
-composer dump-autoload --optimize
+docker-compose exec php composer install  #--no-interaction
+docker-compose exec php composer dump-autoload --optimize
 
 # Clear caches
-php bin/console cache:clear --env=dev --no-warmup
-php bin/console cache:clear --env=prod --no-warmup --no-debug
+docker-compose exec php bin/console cache:clear --env=dev --no-warmup
+docker-compose exec php bin/console cache:clear --env=prod --no-warmup --no-debug
 
 # Update database schema
-php bin/console doctrine:schema:update --force
+docker-compose exec php bin/console doctrine:schema:update --force
 
 # Migrate database
 # php bin/console --no-interaction doctrine:migrations:migrate
