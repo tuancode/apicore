@@ -2,21 +2,22 @@
 
 namespace AppBundle\Controller\V1;
 
+use AppBundle\Controller\RestController;
 use AppBundle\Entity\User;
 use FOS\RestBundle\Controller\Annotations\Delete;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\Put;
-use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use FOS\RestBundle\Routing\ClassResourceInterface;
+use AppBundle\Form\Type\UserType;
 
 /**
  * UserController.
  */
-class UserController extends FOSRestController implements ClassResourceInterface
+class UserController extends RestController
 {
     /**
      * Get user list.
@@ -35,7 +36,7 @@ class UserController extends FOSRestController implements ClassResourceInterface
      */
     public function cgetAction()
     {
-        return 'Hello world!';
+        return $this->getDoctrine()->getRepository(User::class)->findAll();
     }
 
     /**
@@ -59,12 +60,19 @@ class UserController extends FOSRestController implements ClassResourceInterface
      */
     public function getAction(User $user)
     {
-        // ...
     }
 
     /**
      * Create a new user.
      *
+     * @SWG\Parameter(
+     *     name="user",
+     *     in="body",
+     *     description="User creation parameters",
+     *     type="object",
+     *     parameter="user",
+     *     @Model(type=UserType::class)
+     * )
      * @SWG\Response(
      *     response=200,
      *     description="Create a new user",
@@ -78,10 +86,23 @@ class UserController extends FOSRestController implements ClassResourceInterface
      * @Post("/user")
      *
      * @param Request $request
+     *
+     * @return User|FormInterface
      */
     public function postAction(Request $request)
     {
-        // ...
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->persist($user);
+            $this->getDoctrine()->getManager()->flush();
+
+            return $user;
+        }
+
+        return $form;
     }
 
     /**

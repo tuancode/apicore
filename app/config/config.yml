@@ -45,7 +45,10 @@ doctrine:
         dbname: '%database_name%'
         user: '%database_user%'
         password: '%database_password%'
-        charset: UTF8
+        charset: utf8mb4
+        default_table_options:
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: '%kernel.project_dir%/var/data/data.sqlite'
@@ -77,31 +80,6 @@ fos_user:
         address: "%mailer_user%"
         sender_name: "%mailer_user%"
 
-# NelmioApiDoc Configuration
-nelmio_api_doc:
-    areas:
-        path_patterns: # an array of regexps
-            - ^/api(?!/doc$)
-    documentation:
-        info:
-            title: API DOC
-            description:  API core built-in most necessary components.
-            version: 1.0.0
-        securityDefinitions:
-            api_key:
-                type: apiKey
-                description: "Your Json Web Token, dont forget to preprend 'Bearer'"
-                name:  Authorization
-                in: header
-        security:
-            api_key: []
-
-# JWT configuration
-lexik_jwt_authentication:
-    private_key_path: '%jwt_private_key_path%'
-    public_key_path:  '%jwt_public_key_path%'
-    pass_phrase:      '%jwt_key_pass_phrase%'
-    token_ttl:        '%jwt_token_ttl%'
 
 # FOSRest configurations
 fos_rest:
@@ -128,3 +106,29 @@ fos_rest:
     disable_csrf_role: IS_AUTHENTICATED_FULLY
     serializer:
         serialize_null: true
+
+# NelmioApiDoc Configuration
+nelmio_api_doc:
+    areas:
+        path_patterns: # an array of regexps
+            - ^/api(?!/doc$)
+    documentation:
+        info:
+            title: API CORE
+            description:  API Core built-in most necessary components.
+            version: 1.0.0
+        securityDefinitions:
+            api_key:
+                type: apiKey
+                description: "Your Json Web Token, dont forget to preprend 'Bearer'"
+                name:  Authorization
+                in: header
+        security:
+            - api_key: []
+
+# JWT configuration
+lexik_jwt_authentication:
+    private_key_path: '%jwt_private_key_path%'
+    public_key_path:  '%jwt_public_key_path%'
+    pass_phrase:      '%jwt_key_pass_phrase%'
+    token_ttl:        '%jwt_token_ttl%'

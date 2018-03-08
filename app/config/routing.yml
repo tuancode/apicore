@@ -8,8 +8,8 @@ api_doc:
     methods: GET
     defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
 
-api:
-    resource: "@AppBundle/Resources/config/routing-v1.yml"
+api_v1:
+    resource: "@AppBundle/Resources/config/routing_v1.yml"
     prefix:   /api/v1
 
 fos_user:
