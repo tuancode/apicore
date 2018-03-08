@@ -10,6 +10,7 @@ use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\Put;
 use FOS\RestBundle\Controller\Annotations\View;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,11 +22,11 @@ use AppBundle\Form\Type\UserType;
 class UserController extends RestController
 {
     /**
-     * Get user list.
+     * Get list of user.
      *
      * @SWG\Response(
      *     response=200,
-     *     description="Get user list",
+     *     description="Get list of user",
      *     @SWG\Schema(
      *         type="array",
      *         @Model(type=User::class)
@@ -38,21 +39,24 @@ class UserController extends RestController
      * )
      *
      * @Get("/user")
+     *
+     * @return User[]
      */
-    public function cgetAction()
+    public function cgetAction(): array
     {
         return $this->getDoctrine()->getRepository(User::class)->findAll();
     }
 
     /**
-     * Get the specified user information.
-     *
-     * This call takes into account all confirmed awards, but not pending or refused awards.
+     * Get user information.
      *
      * @SWG\Response(
      *     response=200,
-     *     description="Returns the information of an user",
-     *     @Model(type=User::class, groups={"full"})
+     *     description="Get user information",
+     *     @SWG\Schema(
+     *         type="object",
+     *         @Model(type=User::class)
+     *     )
      * )
      * @SWG\Tag(name="/api/v1/user")
      *
@@ -60,17 +64,21 @@ class UserController extends RestController
      *     serializerGroups={"userDetail"}
      * )
      *
-     * @Get("/user/{user}")
+     * @Get("/user/{id}")
      *
      * @param User $user
+     *
+     * @return User;
      */
-    public function getAction(User $user)
+    public function getAction(User $user): User
     {
+        return $user;
     }
 
     /**
      * Create a new user.
      *
+     * @Security(name="abc")
      * @SWG\Parameter(
      *     name="user",
      *     in="body",
@@ -82,7 +90,7 @@ class UserController extends RestController
      * @SWG\Response(
      *     response=200,
      *     description="Create a new user",
-     *     @Model(type=User::class, groups={"full"})
+     *     @Model(type=User::class)
      * )
      * @SWG\Tag(name="/api/v1/user")
      *
@@ -115,10 +123,18 @@ class UserController extends RestController
     /**
      * Update an exist user.
      *
+     * @SWG\Parameter(
+     *     name="user",
+     *     in="body",
+     *     description="User update parameters",
+     *     type="object",
+     *     parameter="user",
+     *     @Model(type=UserType::class)
+     * )
      * @SWG\Response(
      *     response=200,
      *     description="Update an exist user",
-     *     @Model(type=User::class, groups={"full"})
+     *     @Model(type=User::class)
      * )
      * @SWG\Tag(name="/api/v1/user")
      *
@@ -126,14 +142,26 @@ class UserController extends RestController
      *     serializerGroups={"userDetail"}
      * )
      *
-     * @Put("/user/{user}")
+     * @Put("/user/{id}")
      *
      * @param User    $user
      * @param Request $request
+     *
+     * @return FormInterface|User
      */
     public function putAction(User $user, Request $request)
     {
-        // ...
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->persist($user);
+            $this->getDoctrine()->getManager()->flush();
+
+            return $user;
+        }
+
+        return $form;
     }
 
     /**
@@ -145,7 +173,7 @@ class UserController extends RestController
      * )
      * @SWG\Tag(name="/api/v1/user")
      *
-     * @Delete("/user/{user}")
+     * @Delete("/user/{id}")
      *
      * @param User    $user
      * @param Request $request

@@ -19,22 +19,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
-            pattern: ^/
-            anonymous: ~
-            logout: true
-            logout_on_user_change: true
-            # activate different ways to authenticate
-
-            # https://symfony.com/doc/current/security/form_login_setup.html
-            form_login:
-                provider: fos_userbundle
-                csrf_token_generator: security.csrf.token_manager
-
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
-
-        login:
+        auth_login:
             pattern:  ^/auth/v1/login
             stateless: true
             anonymous: true

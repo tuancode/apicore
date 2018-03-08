@@ -9,7 +9,7 @@ AppBundle\Entity\User:
             groups: [userDetail, userList]
         getPhone:
             since_version: 1.0
-            groups: [userDetail, userList]
+            groups: [userDetail]
         getStatus:
             since_version: 1.0
-            groups: [userDetail, userList]
+            groups: [userDetail]

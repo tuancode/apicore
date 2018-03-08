@@ -2,16 +2,16 @@
 
 namespace AppBundle\Controller\V1;
 
+use AppBundle\Controller\RestController;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcher;
 use Swagger\Annotations as SWG;
 
 /**
  * AuthController.
  */
-class AuthController extends FOSRestController
+class AuthController extends RestController
 {
     /**
      * Login for authentication.
@@ -25,7 +25,7 @@ class AuthController extends FOSRestController
      * @RequestParam(name="username", description="Username")
      * @RequestParam(name="password", description="Password")
      *
-     * @Post("/login", name="app.user.cget")
+     * @Post("/login")
      *
      * @param ParamFetcher $fetcher
      */
