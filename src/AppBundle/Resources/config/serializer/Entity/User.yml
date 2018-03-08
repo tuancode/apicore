@@ -1,0 +1,15 @@
+AppBundle\Entity\User:
+    exclusion_policy: ALL
+    virtual_properties:
+        getId:
+            since_version: 1.0
+            groups: [userDetail, userList]
+        getEmail:
+            since_version: 1.0
+            groups: [userDetail, userList]
+        getPhone:
+            since_version: 1.0
+            groups: [userDetail, userList]
+        getStatus:
+            since_version: 1.0
+            groups: [userDetail, userList]

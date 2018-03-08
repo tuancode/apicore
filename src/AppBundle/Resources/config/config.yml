@@ -1,0 +1,6 @@
+jms_serializer:
+    metadata:
+        directories:
+            user-entity:
+                namespace_prefix: "AppBundle\\Entity"
+                path: "@AppBundle/Resources/config/serializer/Entity"

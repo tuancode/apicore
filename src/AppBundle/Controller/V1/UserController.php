@@ -8,6 +8,7 @@ use FOS\RestBundle\Controller\Annotations\Delete;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\Put;
+use FOS\RestBundle\Controller\Annotations\View;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormInterface;
@@ -27,10 +28,14 @@ class UserController extends RestController
      *     description="Get user list",
      *     @SWG\Schema(
      *         type="array",
-     *         @Model(type=User::class, groups={"full"})
+     *         @Model(type=User::class)
      *     )
      * )
      * @SWG\Tag(name="/api/v1/user")
+     *
+     * @View(
+     *     serializerGroups={"userList"}
+     * )
      *
      * @Get("/user")
      */
@@ -47,12 +52,13 @@ class UserController extends RestController
      * @SWG\Response(
      *     response=200,
      *     description="Returns the information of an user",
-     *     @SWG\Schema(
-     *         type="array",
-     *         @Model(type=User::class, groups={"full"})
-     *     )
+     *     @Model(type=User::class, groups={"full"})
      * )
      * @SWG\Tag(name="/api/v1/user")
+     *
+     * @View(
+     *     serializerGroups={"userDetail"}
+     * )
      *
      * @Get("/user/{user}")
      *
@@ -76,12 +82,13 @@ class UserController extends RestController
      * @SWG\Response(
      *     response=200,
      *     description="Create a new user",
-     *     @SWG\Schema(
-     *         type="array",
-     *         @Model(type=User::class, groups={"full"})
-     *     )
+     *     @Model(type=User::class, groups={"full"})
      * )
      * @SWG\Tag(name="/api/v1/user")
+     *
+     * @View(
+     *     serializerGroups={"userDetail"}
+     * )
      *
      * @Post("/user")
      *
@@ -111,12 +118,13 @@ class UserController extends RestController
      * @SWG\Response(
      *     response=200,
      *     description="Update an exist user",
-     *     @SWG\Schema(
-     *         type="array",
-     *         @Model(type=User::class, groups={"full"})
-     *     )
+     *     @Model(type=User::class, groups={"full"})
      * )
      * @SWG\Tag(name="/api/v1/user")
+     *
+     * @View(
+     *     serializerGroups={"userDetail"}
+     * )
      *
      * @Put("/user/{user}")
      *
@@ -134,10 +142,6 @@ class UserController extends RestController
      * @SWG\Response(
      *     response=200,
      *     description="Delete an exist user",
-     *     @SWG\Schema(
-     *         type="array",
-     *         @Model(type=User::class, groups={"full"})
-     *     )
      * )
      * @SWG\Tag(name="/api/v1/user")
      *
