@@ -1,7 +1,3 @@
 api_v1_user:
     resource: "@AppBundle/Controller/V1/UserController.php"
     type: rest
-
-api_v1_auth:
-    resource: "@AppBundle/Controller/V1/AuthController.php"
-    type: rest

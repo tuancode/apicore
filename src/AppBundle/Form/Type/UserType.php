@@ -25,10 +25,10 @@ class UserType extends AbstractType
                 'email',
                 EmailType::class,
                 [
-//                    'documentation' => [
-//                        'type' => 'string',
-//                        'description' => 'Email',
-//                    ],
+                    'documentation' => [
+                        'type' => 'string',
+                        'description' => 'Email',
+                    ],
                 ]
             )
             ->add(
@@ -36,10 +36,10 @@ class UserType extends AbstractType
                 TextType::class,
                 [
                     'property_path' => 'plainPassword',
-//                    'documentation' => [
-//                        'type' => 'string',
-//                        'description' => 'Password',
-//                    ],
+                    'documentation' => [
+                        'type' => 'string',
+                        'description' => 'Password',
+                    ],
                 ]
             )
             ->add(
@@ -47,20 +47,20 @@ class UserType extends AbstractType
                 ChoiceType::class,
                 [
                     'choices' => User::STATUS,
-//                    'documentation' => [
-//                        'type' => 'string',
-//                        'description' => 'Status',
-//                    ],
+                    'documentation' => [
+                        'type' => 'string',
+                        'description' => 'Status',
+                    ],
                 ]
             )
             ->add(
                 'phone',
                 TextType::class,
                 [
-//                    'documentation' => [
-//                        'type' => 'string',
-//                        'description' => 'Phone number',
-//                    ],
+                    'documentation' => [
+                        'type' => 'string',
+                        'description' => 'Phone number',
+                    ],
                 ]
             );
     }

@@ -10,7 +10,6 @@ use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\Put;
 use FOS\RestBundle\Controller\Annotations\View;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,21 +77,17 @@ class UserController extends RestController
     /**
      * Create a new user.
      *
-     * @Security(name="abc")
-     * @SWG\Parameter(
-     *     name="user",
-     *     in="body",
-     *     description="User creation parameters",
-     *     type="object",
-     *     parameter="user",
-     *     @Model(type=UserType::class)
-     * )
+     * @SWG\Tag(name="/api/v1/user")
      * @SWG\Response(
      *     response=200,
      *     description="Create a new user",
      *     @Model(type=User::class)
      * )
-     * @SWG\Tag(name="/api/v1/user")
+     * @SWG\Parameter(
+     *     name="form",
+     *     in="body",
+     *     @Model(type=UserType::class)
+     * )
      *
      * @View(
      *     serializerGroups={"userDetail"}
