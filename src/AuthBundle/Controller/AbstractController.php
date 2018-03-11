@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AuthBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 
 /**
- * RestController.
+ * AbstractController.
  */
 abstract class AbstractController extends FOSRestController implements ClassResourceInterface
 {

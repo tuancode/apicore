@@ -17,16 +17,16 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
  */
 class User extends BaseUser
 {
-    const STATUS_ACTIVE = 'A';
-    const STATUS_SUSPENDED = 'S';
-    const STATUS_REMOVED = 'X';
-    const STATUS = [
+    public const STATUS_ACTIVE = 'A';
+    public const STATUS_SUSPENDED = 'S';
+    public const STATUS_REMOVED = 'X';
+    public const STATUS = [
         self::STATUS_ACTIVE,
         self::STATUS_SUSPENDED,
         self::STATUS_REMOVED,
     ];
 
-    const PHONE_FORMAT = '/^(\+)\d{7,16}$/';
+    public const PHONE_FORMAT = '/^(\+)\d{7,16}$/';
 
     /**
      * @ORM\Id
@@ -60,7 +60,7 @@ class User extends BaseUser
      */
     public function setEmail($email)
     {
-        $email = null === $email ? '' : $email;
+        $email = $email ?? null;
         parent::setEmail($email);
         $this->setUsername($email);
 
@@ -70,7 +70,7 @@ class User extends BaseUser
     /**
      * @return string
      */
-    public function getStatus()
+    public function getStatus(): ?string
     {
         return $this->status;
     }
@@ -149,21 +149,43 @@ class User extends BaseUser
     }
 
     /**
-     * Validation rule.
-     *
      * @param ClassMetadata $metadata
+     *
+     * @throws \Symfony\Component\Validator\Exception\MissingOptionsException
+     * @throws \Symfony\Component\Validator\Exception\InvalidOptionsException
+     * @throws \Symfony\Component\Validator\Exception\ConstraintDefinitionException
      */
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    public static function loadValidatorMetadata(ClassMetadata $metadata): void
     {
-        $metadata->addConstraints([new UniqueEntity(['fields' => ['email', 'phone']])]);
+        $metadata->addConstraints(
+            [
+                new UniqueEntity(['fields' => ['email', 'phone']]),
+            ]
+        );
 
         // Email
-        $metadata->addPropertyConstraints('email', [new NotBlank(), new Email()]);
+        $metadata->addPropertyConstraints(
+            'email',
+            [
+                new NotBlank(),
+                new Email(),
+            ]
+        );
 
         // Password
-        $metadata->addPropertyConstraints('plainPassword', [new NotBlank()]);
+        $metadata->addPropertyConstraints(
+            'plainPassword',
+            [
+                new NotBlank(['groups' => 'Create']),
+            ]
+        );
 
         // Phone
-        $metadata->addPropertyConstraints('phone', [new Regex(['pattern' => self::PHONE_FORMAT])]);
+        $metadata->addPropertyConstraints(
+            'phone',
+            [
+                new Regex(['pattern' => self::PHONE_FORMAT]),
+            ]
+        );
     }
 }
