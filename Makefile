@@ -8,9 +8,8 @@ ifeq ($(OS),Darwin)
 else
 	docker-compose up -d
 endif
-	bash bin/build
 
-stop-dev:           ## Stop the Docker containers
+stop-dev:
 ifeq ($(OS),Darwin)
 	docker-compose stop
 	docker-sync stop
