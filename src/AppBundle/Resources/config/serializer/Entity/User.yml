@@ -13,3 +13,9 @@ AppBundle\Entity\User:
         getStatus:
             since_version: 1.0
             groups: [userDetail]
+        getCreatedDate:
+            since_version: 1.0
+            groups: [userDetail, userList]
+        getUpdatedDate:
+            since_version: 1.0
+            groups: [userDetail, userList]
