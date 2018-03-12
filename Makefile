@@ -1,7 +1,7 @@
 OS := $(shell uname)
 
 # Docker management commands
-start-dev:
+start:
 ifeq ($(OS),Darwin)
 	docker volume create --name=app-sync
 	docker-compose -f docker-compose-dev.yml up -d
@@ -10,7 +10,7 @@ else
 	docker-compose up -d
 endif
 
-stop-dev:
+stop:
 ifeq ($(OS),Darwin)
 	docker-compose stop
 	docker-sync stop

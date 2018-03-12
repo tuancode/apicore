@@ -22,6 +22,7 @@ class UserType extends AbstractType
         $builder
             ->add('email', EmailType::class)
             ->add('status', ChoiceType::class, ['choices' => User::STATUS])
-            ->add('phone', TextType::class);
+            ->add('phone', TextType::class)
+            ->add('enabled', ChoiceType::class, ['choices' => [User::DISABLED, User::ENABLED]]);
     }
 }

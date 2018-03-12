@@ -1,4 +1,0 @@
-services:
-    auth.jwt_token_authenticator:
-        class: AuthBundle\Security\JwtTokenAuthenticator
-        autowire: true

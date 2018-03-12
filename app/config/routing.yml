@@ -1,7 +1,4 @@
-auth:
-    resource: "@AuthBundle/Resources/config/routing/all.yml"
-
-api:
+app:
     resource: "@AppBundle/Resources/config/routing/all.yml"
 
 fos_user:

@@ -1,4 +1,0 @@
-auth_v1:
-    resource: "@AuthBundle/Controller/V1/AuthController.php"
-    type: rest
-    prefix: /auth/v1

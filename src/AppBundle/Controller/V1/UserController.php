@@ -31,7 +31,7 @@ class UserController extends AbstractController
      *     tags={"/api/v1/user"},
      *     @SWG\Response(
      *         response=200,
-     *         description="Get resource successful",
+     *         description="Response successful",
      *         @SWG\Schema(
      *             type="array",
      *             @Model(type=User::class)
@@ -70,7 +70,7 @@ class UserController extends AbstractController
      *     tags={"/api/v1/user"},
      *     @SWG\Response(
      *         response=200,
-     *         description="Get resource successful",
+     *         description="Response successful",
      *         @Model(type=User::class)
      *     ),
      *     @SWG\Response(
@@ -112,7 +112,7 @@ class UserController extends AbstractController
      *     ),
      *     @SWG\Response(
      *         response=200,
-     *         description="Get resource successful",
+     *         description="Response successful",
      *         @Model(type=User::class)
      *     ),
      *     @SWG\Response(
@@ -167,7 +167,7 @@ class UserController extends AbstractController
      *     ),
      *     @SWG\Response(
      *         response=200,
-     *         description="Get resource successful",
+     *         description="Response successful",
      *         @Model(type=User::class)
      *     ),
      *     @SWG\Response(
@@ -219,7 +219,7 @@ class UserController extends AbstractController
      *     tags={"/api/v1/user"},
      *     @SWG\Response(
      *         response=200,
-     *         description="Get resource successful",
+     *         description="Response successful",
      *         @Model(type=User::class)
      *     ),
      *     @SWG\Response(

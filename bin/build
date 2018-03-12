@@ -1,6 +1,6 @@
 #!/bin/sh
 # Refresh source code
-docker-compose exec php composer install  #--no-interaction
+docker-compose exec php composer install  --no-interaction
 docker-compose exec php composer dump-autoload --optimize
 
 # Clear caches

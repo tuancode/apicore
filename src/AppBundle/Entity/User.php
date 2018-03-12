@@ -26,6 +26,9 @@ class User extends BaseUser
         self::STATUS_REMOVED,
     ];
 
+    public const DISABLED = 0;
+    public const ENABLED = 1;
+
     public const PHONE_FORMAT = '/^(\+)\d{7,16}$/';
 
     /**

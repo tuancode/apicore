@@ -1,3 +1,8 @@
+auth_v1:
+    resource: "@AppBundle/Controller/V1/AuthController.php"
+    type: rest
+    prefix: /auth/v1
+
 api_v1:
-    resource: "@AppBundle/Resources/config/routing/v1.yml"
+    resource: "@AppBundle/Resources/config/routing/api_v1.yml"
     prefix: /api/v1
