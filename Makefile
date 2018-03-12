@@ -6,8 +6,10 @@ ifeq ($(OS),Darwin)
 	docker volume create --name=app-sync
 	docker-compose -f docker-compose-dev.yml up -d
 	docker-sync start
+	make build
 else
 	docker-compose up -d
+	make build
 endif
 
 stop:
