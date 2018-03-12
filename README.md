@@ -3,8 +3,16 @@ Api Core
 
 A built-in symfony project including necessary components aim to quickly build an Rest Api.
 
+Note
+------------
+For MAC OS user, please install docker-sync first for addressing docker performance volumes issue
+```bash
+$ sudo gem install docker-sync
+```
+
 Installation
 ------------
+
 First, you need to start the application environment by
 ```bash
 $ make start
