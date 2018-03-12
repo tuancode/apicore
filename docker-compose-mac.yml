@@ -16,11 +16,15 @@ services:
     php:
         image: atdock/php:7.1-jessie
         container_name: apicore_php
+        environment:
+            TIMEZONE: Asia/Ho_Chi_Minh
         depends_on:
             - mysql
         volumes:
-            - ./.docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
+            - ./.docker/php/php.ini:/usr/local/etc/php/php.ini:ro
+            - ./.docker/dotfiles/.multitailrc:/root/.multitailrc:ro
             - app-sync:/var/www:rw
+        working_dir: /var/www
 
     mysql:
         image: atdock/mysql:5.7
