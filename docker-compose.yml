@@ -1,25 +1,30 @@
 version: '3'
 
 services:
-    httpd:
-        image: atdock/httpd:2.4
-        container_name: apicore_httpd
-        links:
+    nginx:
+        image: nginx:1.13-alpine
+        container_name: apicore_nginx
+        depends_on:
             - php
         volumes:
-            - ./.docker/httpd/default.conf:/usr/local/apache2/conf.d/default.conf
-            - .:/usr/local/apache2/htdocs:rw
+            - ./.docker/nginx/app.conf:/etc/nginx/conf.d/default.conf:ro
+            - ./:/var/www:ro
         ports:
-            - "8001:80"
+            - 8001:80
+        working_dir: /var/www
 
     php:
-        image: atdock/php:7.1
+        image: atdock/php:7.1-jessie
         container_name: apicore_php
+        environment:
+            TIMEZONE: Asia/Ho_Chi_Minh
         depends_on:
             - mysql
         volumes:
-            - ./.docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
-            - .:/var/www:rw
+            - ./.docker/php/php.ini:/usr/local/etc/php/php.ini:ro
+            - ./.docker/dotfiles/.multitailrc:/root/.multitailrc:ro
+            - ./:/var/www:rw
+        working_dir: /var/www
 
     mysql:
         image: atdock/mysql:5.7

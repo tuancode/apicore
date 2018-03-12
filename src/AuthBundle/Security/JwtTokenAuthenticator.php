@@ -71,7 +71,7 @@ class JwtTokenAuthenticator extends AbstractGuardAuthenticator
     {
         $token = $this->tokenExtractor->extract($request);
         if (!$token) {
-            return null;
+            return false;
         }
 
         return $token;
@@ -156,5 +156,13 @@ class JwtTokenAuthenticator extends AbstractGuardAuthenticator
     public function supportsRememberMe(): bool
     {
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supports(Request $request)
+    {
+        return true;
     }
 }
