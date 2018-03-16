@@ -10,7 +10,9 @@ use FOS\RestBundle\Controller\Annotations\Delete;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\Put;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\View;
+use FOS\RestBundle\Request\ParamFetcher;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Swagger\Annotations as SWG;
@@ -24,10 +26,10 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class UserController extends AbstractController
 {
     /**
-     * Get list of user.
+     * Retrieves the collection of User resources.
      *
      * @Operation(
-     *     summary="Get list of user",
+     *     summary="Retrieves the collection of User resources",
      *     tags={"/api/v1/user"},
      *     @SWG\Response(
      *         response=200,
@@ -51,22 +53,32 @@ class UserController extends AbstractController
      *     serializerGroups={"userList"}
      * )
      *
+     * @QueryParam(name="filters[email]", description="Filter by email")
+     * @QueryParam(name="filters[phone]", description="Filter by phone")
+     * @QueryParam(name="filters[status]", description="Filter by status")
+     * @QueryParam(name="pagination", description="Enable/disable pagination",
+     *     nullable=true, allowBlank=true, strict=false, requirements="[1|0]")
+     * @QueryParam(name="page", description="Page of collection", nullable=true, allowBlank=true, strict=false)
+     * @QueryParam(name="limit", description="Items per page", nullable=true, allowBlank=true, strict=false)
+     *
      * @Get("/user")
      *
-     * @return User[]
+     * @param ParamFetcher $request
      *
-     * @throws \LogicException
+     * @return array
      */
-    public function cgetAction(): array
+    public function cgetAction(ParamFetcher $request): array
     {
-        return $this->getDoctrine()->getRepository(User::class)->findAll();
+        $filters = $this->getRequestFilters($request);
+
+        return $this->getDoctrine()->getRepository(User::class)->search($filters);
     }
 
     /**
-     * Get an user information.
+     * Retrieves an User resource.
      *
      * @Operation(
-     *     summary="Get an user information",
+     *     summary="Retrieves an User resource",
      *     tags={"/api/v1/user"},
      *     @SWG\Response(
      *         response=200,
@@ -99,10 +111,10 @@ class UserController extends AbstractController
     }
 
     /**
-     * Create a new user.
+     * Create an User resource.
      *
      * @Operation(
-     *     summary="Create a new user",
+     *     summary="Create an User resource",
      *     tags={"/api/v1/user"},
      *     @SWG\Parameter(
      *         name="user",
@@ -154,10 +166,10 @@ class UserController extends AbstractController
     }
 
     /**
-     * Update an exist user.
+     * Replace the User resources.
      *
      * @Operation(
-     *     summary="Update an exist user",
+     *     summary="Replace the User resources",
      *     tags={"/api/v1/user"},
      *     @SWG\Parameter(
      *         name="user",
@@ -212,10 +224,10 @@ class UserController extends AbstractController
     }
 
     /**
-     * Delete an exist user.
+     * Removes the User resource.
      *
      * @Operation(
-     *     summary="Delete an exist user",
+     *     summary="Removes the User resource",
      *     tags={"/api/v1/user"},
      *     @SWG\Response(
      *         response=200,

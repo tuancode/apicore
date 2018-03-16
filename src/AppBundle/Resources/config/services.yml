@@ -9,3 +9,7 @@ services:
         arguments: ['@translator']
         tags:
           - {name: jms_serializer.subscribing_handler}
+
+    app.pagination_factory:
+        class: AppBundle\Pagination\PaginationFactory
+        autowire: true
