@@ -2,3 +2,10 @@ services:
     app.jwt_token_authenticator:
         class: AppBundle\Security\JwtTokenAuthenticator
         autowire: true
+
+    # Handler
+    jms_serializer.form_error_handler:
+        class: AppBundle\Serializer\Handler\FormErrorHandler
+        arguments: ['@translator']
+        tags:
+          - {name: jms_serializer.subscribing_handler}
