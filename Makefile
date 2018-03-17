@@ -21,8 +21,8 @@ endif
 
 # Application management commands
 build:
-	bash bin/build
-
+	docker-compose exec php bin/build
+	docker-compose exec php chown -R www-data:www-data var
 
 # Log management commands
 log-sev:
