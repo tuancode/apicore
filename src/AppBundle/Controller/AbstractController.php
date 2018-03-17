@@ -19,6 +19,8 @@ abstract class AbstractController extends FOSRestController implements ClassReso
      * @param array $additionFilters
      *
      * @return array|mixed
+     *
+     * @throws \InvalidArgumentException
      */
     protected function getRequestFilters($request, array $additionFilters = [])
     {
@@ -28,7 +30,7 @@ abstract class AbstractController extends FOSRestController implements ClassReso
             );
         }
 
-        $filters = $request->get('filters', []);
+        $filters = $request->query->get('filters', []);
         $filters = array_merge($filters, $additionFilters);
 
         return $filters;

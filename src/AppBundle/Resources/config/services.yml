@@ -10,6 +10,12 @@ services:
         tags:
           - {name: jms_serializer.subscribing_handler}
 
-    app.pagination_factory:
-        class: AppBundle\Pagination\PaginationFactory
+    app.pagination:
+        class: AppBundle\Pagination\Pagination
         autowire: true
+
+    app.pagination_param_converter:
+        class: AppBundle\Request\ParamConverter\PaginationParamConverter
+        autowire: true
+        tags:
+            - { name: request.param_converter, priority: 10, converter: pagination }

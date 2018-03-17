@@ -6,13 +6,14 @@ use AppBundle\Controller\AbstractController;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\UserCreateType;
 use AppBundle\Form\Type\UserType;
+use AppBundle\Pagination\PaginatedCollection;
+use AppBundle\Pagination\Pagination;
 use FOS\RestBundle\Controller\Annotations\Delete;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\Put;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\View;
-use FOS\RestBundle\Request\ParamFetcher;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Swagger\Annotations as SWG;
@@ -50,7 +51,7 @@ class UserController extends AbstractController
      * )
      *
      * @View(
-     *     serializerGroups={"userList"}
+     *     serializerGroups={"pageList", "userList"}
      * )
      *
      * @QueryParam(name="filters[email]", description="Filter by email")
@@ -59,19 +60,33 @@ class UserController extends AbstractController
      * @QueryParam(name="pagination", description="Enable/disable pagination",
      *     nullable=true, allowBlank=true, strict=false, requirements="[1|0]")
      * @QueryParam(name="page", description="Page of collection", nullable=true, allowBlank=true, strict=false)
-     * @QueryParam(name="limit", description="Items per page", nullable=true, allowBlank=true, strict=false)
+     * @QueryParam(name="itemsPerPage", description="Items per page", nullable=true, allowBlank=true, strict=false)
      *
      * @Get("/user")
      *
-     * @param ParamFetcher $request
+     * @param Request    $request
+     * @param Pagination $pagination
      *
-     * @return array
+     * @return PaginatedCollection|array
+     *
+     * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
+     * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
+     * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
+     * @throws \Pagerfanta\Exception\OutOfRangeCurrentPageException
+     * @throws \Pagerfanta\Exception\NotIntegerMaxPerPageException
+     * @throws \Pagerfanta\Exception\NotIntegerCurrentPageException
+     * @throws \Pagerfanta\Exception\LessThan1MaxPerPageException
+     * @throws \Pagerfanta\Exception\LessThan1CurrentPageException
+     * @throws \Pagerfanta\Exception\LogicException
+     * @throws \LogicException
+     * @throws \InvalidArgumentException
      */
-    public function cgetAction(ParamFetcher $request): array
+    public function cgetAction(Request $request, Pagination $pagination)
     {
         $filters = $this->getRequestFilters($request);
+        $repository = $this->getDoctrine()->getRepository(User::class);
 
-        return $this->getDoctrine()->getRepository(User::class)->search($filters);
+        return $repository->search($filters, $pagination);
     }
 
     /**
