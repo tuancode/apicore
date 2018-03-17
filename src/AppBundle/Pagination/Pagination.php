@@ -2,7 +2,9 @@
 
 namespace AppBundle\Pagination;
 
+use Doctrine\ORM\QueryBuilder;
 use FOS\RestBundle\Request\ParamFetcher;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -54,45 +56,28 @@ class Pagination
     }
 
     /**
-     * @param mixed  $request
-     * @param string $route
-     * @param array  $routeParams
-     *
-     * @return Pagination
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function parseRequest($request, string $route, array $routeParams = []): Pagination
-    {
-        if (!$request instanceof Request && !$request instanceof ParamFetcher) {
-            throw new \InvalidArgumentException(
-                sprintf('Expect request is instance of %s or %s', Request::class, ParamFetcher::class)
-            );
-        }
-
-        $this->pagination = $request->get('pagination', true);
-        $this->page = $request->get('page', self::FIRST_PAGE);
-        $this->itemsPerPage = $request->get('limit', self::ITEMS_PER_PAGE);
-        $this->route = $route;
-        $this->routeParams = $routeParams;
-
-        return $this;
-    }
-
-    /**
      * Create a pagination collection.
      *
-     * @param Pagerfanta $pager
+     * @param QueryBuilder $builder
      *
      * @return PaginatedCollection
      *
+     * @throws \Pagerfanta\Exception\LogicException
      * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
      * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
      * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
-     * @throws \Pagerfanta\Exception\LogicException
+     * @throws \Pagerfanta\Exception\OutOfRangeCurrentPageException
+     * @throws \Pagerfanta\Exception\NotIntegerCurrentPageException
+     * @throws \Pagerfanta\Exception\NotIntegerMaxPerPageException
+     * @throws \Pagerfanta\Exception\LessThan1CurrentPageException
+     * @throws \Pagerfanta\Exception\LessThan1MaxPerPageException
      */
-    public function createCollection(Pagerfanta $pager): PaginatedCollection
+    public function createCollection(QueryBuilder $builder): PaginatedCollection
     {
+        $pager = new Pagerfanta(new DoctrineORMAdapter($builder));
+        $pager->setMaxPerPage($this->itemsPerPage);
+        $pager->setCurrentPage($this->page);
+
         $resources = [];
         foreach ($pager->getCurrentPageResults() as $result) {
             $resources[] = $result;
@@ -117,42 +102,51 @@ class Pagination
     }
 
     /**
-     * @param int $page
+     * Set up pagination information from request.
+     *
+     * @param mixed $request
+     *
+     * @return Pagination
+     *
+     * @throws \InvalidArgumentException
      */
-    public function setPage(int $page): void
+    public function setRequest($request): Pagination
     {
-        $this->page = $page;
+        if (!$request instanceof Request && !$request instanceof ParamFetcher) {
+            throw new \InvalidArgumentException(
+                sprintf('Expect request is instance of %s or %s', Request::class, ParamFetcher::class)
+            );
+        }
+
+        $this->pagination = $request->get('pagination', true);
+        $this->page = $request->get('page', self::FIRST_PAGE);
+        $this->itemsPerPage = $request->get('limit', self::ITEMS_PER_PAGE);
+        $this->route = $request->get('_route');
+
+        return $this;
     }
 
     /**
-     * @param string $route
+     * Set up route params.
+     *
+     * @param array $routeParams
+     *
+     * @return Pagination
      */
-    public function setRoute(string $route): void
+    public function setRouteParams(array $routeParams = []): Pagination
     {
-        $this->route = $route;
+        $this->routeParams = $routeParams;
+
+        return $this;
     }
 
     /**
+     * Whether pagination is enable or not.
+     *
      * @return bool
      */
     public function isPagination(): bool
     {
         return $this->pagination;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPage(): int
-    {
-        return $this->page;
-    }
-
-    /**
-     * @return int
-     */
-    public function getItemsPerPage(): int
-    {
-        return $this->itemsPerPage;
     }
 }

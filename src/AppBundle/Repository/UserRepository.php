@@ -2,10 +2,9 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\User;
 use AppBundle\Pagination\Pagination;
 use Doctrine\ORM\EntityRepository;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Pagerfanta;
 use AppBundle\Pagination\PaginatedCollection;
 
 /**
@@ -14,10 +13,13 @@ use AppBundle\Pagination\PaginatedCollection;
 class UserRepository extends EntityRepository
 {
     /**
-     * @param array      $filters
-     * @param Pagination $pagination
+     * Retrieves the collection of user with filter and pagination supported.
      *
-     * @return PaginatedCollection|array
+     * @param array      $filters    Filters argument
+     * @param Pagination $pagination Optional. Null is disable pagination
+     *
+     * @return User[]|PaginatedCollection Array of User is returned when no pagination,
+     *                                    otherwise the PaginatedCollection is returned
      *
      * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
      * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
@@ -46,11 +48,7 @@ class UserRepository extends EntityRepository
         }
 
         if ($pagination && $pagination->isPagination()) {
-            $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($builder));
-            $pagerfanta->setMaxPerPage($pagination->getItemsPerPage());
-            $pagerfanta->setCurrentPage($pagination->getPage());
-
-            return $pagination->createCollection($pagerfanta);
+            return $pagination->createCollection($builder);
         }
 
         return $builder->getQuery()->getResult();

@@ -34,7 +34,7 @@ class PaginationParamConverter implements ParamConverterInterface
      */
     public function apply(Request $request, ParamConverter $configuration): bool
     {
-        $this->pagination->parseRequest($request, $request->get('_route'));
+        $this->pagination->setRequest($request);
 
         return true;
     }
