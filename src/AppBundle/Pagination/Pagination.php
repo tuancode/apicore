@@ -118,9 +118,18 @@ class Pagination
             );
         }
 
-        $this->pagination = $request->get('pagination', true);
-        $this->page = $request->get('page', self::FIRST_PAGE);
-        $this->itemsPerPage = $request->get('limit', self::ITEMS_PER_PAGE);
+        if (null != $request->get('pagination')) {
+            $this->pagination = $request->get('pagination');
+        }
+
+        if (null != $request->get('page')) {
+            $this->page = $request->get('page');
+        }
+
+        if (null != $request->get('itemsPerPage')) {
+            $this->itemsPerPage = $request->get('itemsPerPage');
+        }
+
         $this->route = $request->get('_route');
 
         return $this;

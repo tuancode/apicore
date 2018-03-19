@@ -57,7 +57,7 @@ class UserController extends AbstractController
      * @QueryParam(name="filters[email]", description="Filter by email")
      * @QueryParam(name="filters[phone]", description="Filter by phone")
      * @QueryParam(name="filters[status]", description="Filter by status")
-     * @QueryParam(name="pagination", description="Enable/disable pagination",
+     * @QueryParam(name="pagination", description="0:disable 1:enable",
      *     nullable=true, allowBlank=true, strict=false, requirements="[1|0]")
      * @QueryParam(name="page", description="Page of collection", nullable=true, allowBlank=true, strict=false)
      * @QueryParam(name="itemsPerPage", description="Items per page", nullable=true, allowBlank=true, strict=false)
