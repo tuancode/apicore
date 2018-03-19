@@ -47,7 +47,7 @@ class PaginatedCollection
      */
     public function addLink(string $ref, string $url): void
     {
-        $this->_links = new ArrayCollection([$ref => $url]);
+        $this->_links->set($ref, $url);
     }
 
     /**
