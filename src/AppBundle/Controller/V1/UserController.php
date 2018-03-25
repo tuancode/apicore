@@ -30,14 +30,14 @@ class UserController extends AbstractController
      * Retrieves the collection of User resources.
      *
      * @Operation(
-     *     summary="Retrieves the collection of User resources",
+     *     summary="Retrieves the collection of User resources.",
      *     tags={"/api/v1/user"},
      *     @SWG\Response(
      *         response=200,
      *         description="Response successful",
      *         @SWG\Schema(
      *             type="array",
-     *             @Model(type=User::class)
+     *             @SWG\Items(ref=@Model(type=User::class))
      *         )
      *     ),
      *     @SWG\Response(
@@ -93,7 +93,7 @@ class UserController extends AbstractController
      * Retrieves an User resource.
      *
      * @Operation(
-     *     summary="Retrieves an User resource",
+     *     summary="Retrieves an User resource.",
      *     tags={"/api/v1/user"},
      *     @SWG\Response(
      *         response=200,
@@ -129,7 +129,7 @@ class UserController extends AbstractController
      * Create an User resource.
      *
      * @Operation(
-     *     summary="Create an User resource",
+     *     summary="Create an User resource.",
      *     tags={"/api/v1/user"},
      *     @SWG\Parameter(
      *         name="user",
@@ -181,10 +181,10 @@ class UserController extends AbstractController
     }
 
     /**
-     * Replace the User resources.
+     * Replace the User resource.
      *
      * @Operation(
-     *     summary="Replace the User resources",
+     *     summary="Replace the User resource.",
      *     tags={"/api/v1/user"},
      *     @SWG\Parameter(
      *         name="user",
@@ -242,7 +242,7 @@ class UserController extends AbstractController
      * Removes the User resource.
      *
      * @Operation(
-     *     summary="Removes the User resource",
+     *     summary="Removes the User resource.",
      *     tags={"/api/v1/user"},
      *     @SWG\Response(
      *         response=200,

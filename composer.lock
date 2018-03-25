@@ -1702,23 +1702,24 @@
         },
         {
             "name": "nelmio/api-doc-bundle",
-            "version": "v3.1.0",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "dad7f7735132b48b4ccaeff41ddefd1ce71eda2a"
+                "reference": "a356221c6769988712295a16bc5896b8265e8029"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/dad7f7735132b48b4ccaeff41ddefd1ce71eda2a",
-                "reference": "dad7f7735132b48b4ccaeff41ddefd1ce71eda2a",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/a356221c6769988712295a16bc5896b8265e8029",
+                "reference": "a356221c6769988712295a16bc5896b8265e8029",
                 "shasum": ""
             },
             "require": {
-                "exsyst/swagger": "~0.3",
+                "exsyst/swagger": "~0.3|~0.4",
                 "php": "^7.0",
                 "phpdocumentor/reflection-docblock": "^3.1|^4.0",
                 "symfony/framework-bundle": "^3.4|^4.0",
+                "symfony/options-resolver": "^3.4.4|^4.0",
                 "symfony/property-info": "^3.4|^4.0",
                 "zircote/swagger-php": "^2.0.9"
             },
@@ -1750,7 +1751,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.1.x-dev"
+                    "dev-master": "3.2.x-dev"
                 }
             },
             "autoload": {
@@ -1779,7 +1780,7 @@
                 "documentation",
                 "rest"
             ],
-            "time": "2018-01-26T16:09:38+00:00"
+            "time": "2018-03-24T10:23:14+00:00"
         },
         {
             "name": "nelmio/cors-bundle",
@@ -2451,12 +2452,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "1b2f1f59ff8fc933e4d61ee45214ff3228e20c75"
+                "reference": "4a272b63452f4d8ff0d48a759e59db9359a9b5b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/1b2f1f59ff8fc933e4d61ee45214ff3228e20c75",
-                "reference": "1b2f1f59ff8fc933e4d61ee45214ff3228e20c75",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/4a272b63452f4d8ff0d48a759e59db9359a9b5b7",
+                "reference": "4a272b63452f4d8ff0d48a759e59db9359a9b5b7",
                 "shasum": ""
             },
             "conflict": {
@@ -2529,7 +2530,7 @@
                 "simplesamlphp/simplesamlphp": "<1.15.2",
                 "simplesamlphp/simplesamlphp-module-infocard": "<1.0.1",
                 "socalnick/scn-social-auth": "<1.15.2",
-                "squizlabs/php_codesniffer": ">=1,<2.8.1",
+                "squizlabs/php_codesniffer": ">=1,<2.8.1|>=3,<3.0.1",
                 "stormpath/sdk": ">=0,<9.9.99",
                 "swiftmailer/swiftmailer": ">=4,<5.4.5",
                 "symfony/dependency-injection": ">=2,<2.0.17",
@@ -2558,11 +2559,13 @@
                 "typo3/neos": ">=1.1,<1.1.3|>=1.2,<1.2.13|>=2,<2.0.4",
                 "willdurand/js-translation-bundle": "<2.1.1",
                 "yiisoft/yii": ">=1.1.14,<1.1.15",
-                "yiisoft/yii2": "<2.0.14",
+                "yiisoft/yii2": "<2.0.15",
                 "yiisoft/yii2-bootstrap": "<2.0.4",
-                "yiisoft/yii2-dev": "<2.0.14",
+                "yiisoft/yii2-dev": "<2.0.15",
+                "yiisoft/yii2-elasticsearch": "<2.0.5",
                 "yiisoft/yii2-gii": "<2.0.4",
                 "yiisoft/yii2-jui": "<2.0.4",
+                "yiisoft/yii2-redis": "<2.0.8",
                 "zendframework/zend-cache": ">=2.4,<2.4.8|>=2.5,<2.5.3",
                 "zendframework/zend-captcha": ">=2,<2.4.9|>=2.5,<2.5.2",
                 "zendframework/zend-crypt": ">=2,<2.4.9|>=2.5,<2.5.2",
@@ -2600,7 +2603,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-03-15T17:53:05+00:00"
+            "time": "2018-03-22T21:16:54+00:00"
         },
         {
             "name": "sensio/distribution-bundle",
@@ -3440,16 +3443,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.4.6",
+            "version": "v2.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "d2117ec118c1ff3d28ccddca8212d82787a4809f"
+                "reference": "69aacd44dbbaa3199d5afb68605c996d577896fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/d2117ec118c1ff3d28ccddca8212d82787a4809f",
-                "reference": "d2117ec118c1ff3d28ccddca8212d82787a4809f",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/69aacd44dbbaa3199d5afb68605c996d577896fc",
+                "reference": "69aacd44dbbaa3199d5afb68605c996d577896fc",
                 "shasum": ""
             },
             "require": {
@@ -3458,8 +3461,8 @@
             },
             "require-dev": {
                 "psr/container": "^1.0",
-                "symfony/debug": "~2.7",
-                "symfony/phpunit-bridge": "~3.3@dev"
+                "symfony/debug": "^2.7",
+                "symfony/phpunit-bridge": "^3.3"
             },
             "type": "library",
             "extra": {
@@ -3502,7 +3505,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2018-03-03T16:23:01+00:00"
+            "time": "2018-03-20T04:31:17+00:00"
         },
         {
             "name": "webmozart/assert",

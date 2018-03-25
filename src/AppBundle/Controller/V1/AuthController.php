@@ -26,12 +26,12 @@ class AuthController extends AbstractController
      * API Login.
      *
      * @Operation(
-     *     summary="API Login",
+     *     summary="Login",
      *     consumes={"multipart/form-data"},
      *     tags={"/auth/v1"},
      *     @SWG\Response(
      *         response=200,
-     *         description="API Login",
+     *         description="Login",
      *         examples={
      *             "application/json":{
      *                 "access_token": "string",

@@ -131,13 +131,13 @@ nelmio_api_doc:
             description:  API Core built-in most necessary components.
             version: 1.0.0
         securityDefinitions:
-            api_key:
+            Bearer:
                 type: apiKey
-                description: "Json Web Token, don't forget to append 'Bearer'"
-                name:  Authorization
+                description: 'Value: Bearer {jwt}'
+                name: Authorization
                 in: header
         security:
-            - api_key: []
+            - Bearer: []
 
 # JWT configuration
 lexik_jwt_authentication:
