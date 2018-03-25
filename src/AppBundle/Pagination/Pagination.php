@@ -74,7 +74,7 @@ class Pagination
      */
     public function createCollection(QueryBuilder $builder): PaginatedCollection
     {
-        $pager = new Pagerfanta(new DoctrineORMAdapter($builder));
+        $pager = new Pagerfanta(new DoctrineORMAdapter($builder, false));
         $pager->setMaxPerPage($this->itemsPerPage);
         $pager->setCurrentPage($this->page);
 
@@ -89,7 +89,7 @@ class Pagination
 
         $paginatedCollection = new PaginatedCollection($resources, $pager->getNbResults());
         $paginatedCollection->addLink('self', $createLinkUrl($this->page));
-        $paginatedCollection->addLink('first', $createLinkUrl(1));
+        $paginatedCollection->addLink('first', $createLinkUrl(self::FIRST_PAGE));
         $paginatedCollection->addLink('last', $createLinkUrl($pager->getNbPages()));
         if ($pager->hasNextPage()) {
             $paginatedCollection->addLink('next', $createLinkUrl($pager->getNextPage()));

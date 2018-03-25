@@ -1,15 +1,15 @@
-AppBundle\Pagination\PaginationCollection:
+AppBundle\Pagination\PaginatedCollection:
     exclusion_policy: ALL
     virtual_properties:
         getItems:
             since_version: 1.0
-            groups: [pageList]
+            groups: [paginated]
         getTotal:
             since_version: 1.0
-            groups: [pageList]
+            groups: [paginated]
         getCount:
             since_version: 1.0
-            groups: [pageList]
+            groups: [paginated]
         getLinks:
             since_version: 1.0
-            groups: [pageList]
+            groups: [paginated]

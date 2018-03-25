@@ -51,7 +51,7 @@ class UserController extends AbstractController
      * )
      *
      * @View(
-     *     serializerGroups={"pageList", "userList"}
+     *     serializerGroups={"paginated", "userList"}
      * )
      *
      * @QueryParam(name="filters[email]", description="Filter by email")
@@ -67,7 +67,7 @@ class UserController extends AbstractController
      * @param Request    $request
      * @param Pagination $pagination
      *
-     * @return PaginatedCollection|array
+     * @return PaginatedCollection|User[]
      *
      * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
      * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
@@ -118,7 +118,7 @@ class UserController extends AbstractController
      *
      * @param User $user
      *
-     * @return User;
+     * @return User
      */
     public function getAction(User $user): User
     {

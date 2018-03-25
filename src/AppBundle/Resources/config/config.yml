@@ -5,8 +5,8 @@ jms_serializer:
     metadata:
         directories:
             pagination:
-                namespace_prefix: "AppBundle\\Pagination"
+                namespace_prefix: AppBundle\Pagination
                 path: "@AppBundle/Resources/config/serializer/Pagination"
             entity:
-                namespace_prefix: "AppBundle\\Entity"
+                namespace_prefix: AppBundle\Entity
                 path: "@AppBundle/Resources/config/serializer/Entity"
