@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\User;
 use AppBundle\Pagination\Pagination;
+use AppBundle\Pagination\PaginationInterface;
 use Doctrine\ORM\EntityRepository;
 use AppBundle\Pagination\PaginatedCollection;
 
@@ -15,23 +16,13 @@ class UserRepository extends EntityRepository
     /**
      * Retrieves the collection of user with filter and pagination supported.
      *
-     * @param array      $filters    Filters argument
-     * @param Pagination $pagination Optional. Null is disable pagination
+     * @param array               $filters    Filters argument
+     * @param PaginationInterface $pagination Optional. Null is disable pagination
      *
      * @return User[]|PaginatedCollection Array of User is returned when no pagination,
      *                                    otherwise the PaginatedCollection is returned
-     *
-     * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
-     * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
-     * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
-     * @throws \Pagerfanta\Exception\LogicException
-     * @throws \Pagerfanta\Exception\OutOfRangeCurrentPageException
-     * @throws \Pagerfanta\Exception\NotIntegerMaxPerPageException
-     * @throws \Pagerfanta\Exception\NotIntegerCurrentPageException
-     * @throws \Pagerfanta\Exception\LessThan1MaxPerPageException
-     * @throws \Pagerfanta\Exception\LessThan1CurrentPageException
      */
-    public function search(array $filters = [], Pagination $pagination = null)
+    public function search(array $filters = [], PaginationInterface $pagination = null)
     {
         $builder = $this->createQueryBuilder('u');
 

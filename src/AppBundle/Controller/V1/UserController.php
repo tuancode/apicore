@@ -35,10 +35,7 @@ class UserController extends AbstractController
      *     @SWG\Response(
      *         response=200,
      *         description="Response successful",
-     *         @SWG\Schema(
-     *             type="array",
-     *             @SWG\Items(ref=@Model(type=User::class))
-     *         )
+     *         @SWG\Schema(type="array", @SWG\Items(ref=@Model(type=User::class)))
      *     ),
      *     @SWG\Response(
      *         response=401,

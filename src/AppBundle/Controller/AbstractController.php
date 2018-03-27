@@ -30,7 +30,7 @@ abstract class AbstractController extends FOSRestController implements ClassReso
             );
         }
 
-        $filters = $request->query->get('filters', []);
+        $filters = $request->get('filters', []);
         $filters = array_merge($filters, $additionFilters);
 
         return $filters;

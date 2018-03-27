@@ -3,6 +3,7 @@
 namespace AppBundle\Request\ParamConverter;
 
 use AppBundle\Pagination\Pagination;
+use AppBundle\Pagination\PaginationInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,16 +14,14 @@ use Symfony\Component\HttpFoundation\Request;
 class PaginationParamConverter implements ParamConverterInterface
 {
     /**
-     * @var Pagination
+     * @var PaginationInterface
      */
     private $pagination;
 
     /**
-     * PaginationParamConverter constructor.
-     *
-     * @param Pagination $pagination
+     * @param PaginationInterface $pagination
      */
-    public function __construct(Pagination $pagination)
+    public function __construct(PaginationInterface $pagination)
     {
         $this->pagination = $pagination;
     }

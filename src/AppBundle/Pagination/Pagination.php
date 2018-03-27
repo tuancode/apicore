@@ -12,7 +12,7 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * Pagination.
  */
-class Pagination
+class Pagination implements PaginationInterface
 {
     public const FIRST_PAGE = 1;
     public const ITEMS_PER_PAGE = 30;
@@ -56,21 +56,7 @@ class Pagination
     }
 
     /**
-     * Create a pagination collection.
-     *
-     * @param QueryBuilder $builder
-     *
-     * @return PaginatedCollection
-     *
-     * @throws \Pagerfanta\Exception\LogicException
-     * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
-     * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
-     * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
-     * @throws \Pagerfanta\Exception\OutOfRangeCurrentPageException
-     * @throws \Pagerfanta\Exception\NotIntegerCurrentPageException
-     * @throws \Pagerfanta\Exception\NotIntegerMaxPerPageException
-     * @throws \Pagerfanta\Exception\LessThan1CurrentPageException
-     * @throws \Pagerfanta\Exception\LessThan1MaxPerPageException
+     * {@inheritdoc}
      */
     public function createCollection(QueryBuilder $builder): PaginatedCollection
     {
@@ -102,15 +88,19 @@ class Pagination
     }
 
     /**
-     * Set up pagination information from request.
-     *
-     * @param mixed $request
-     *
-     * @return Pagination
+     * {@inheritdoc}
+     */
+    public function isPagination(): bool
+    {
+        return $this->pagination;
+    }
+
+    /**
+     * {@inheritdoc}
      *
      * @throws \InvalidArgumentException
      */
-    public function setRequest($request): Pagination
+    public function setRequest($request): self
     {
         if (!$request instanceof Request && !$request instanceof ParamFetcher) {
             throw new \InvalidArgumentException(
@@ -136,26 +126,12 @@ class Pagination
     }
 
     /**
-     * Set up route params.
-     *
-     * @param array $routeParams
-     *
-     * @return Pagination
+     * {@inheritdoc}
      */
-    public function setRouteParams(array $routeParams = []): Pagination
+    public function setRouteParams(array $routeParams = []): self
     {
         $this->routeParams = $routeParams;
 
         return $this;
-    }
-
-    /**
-     * Whether pagination is enable or not.
-     *
-     * @return bool
-     */
-    public function isPagination(): bool
-    {
-        return $this->pagination;
     }
 }
