@@ -1,21 +1,7 @@
 services:
-    app.jwt_token_authenticator:
-        class: AppBundle\Security\JwtTokenAuthenticator
-        autowire: true
-
     # Handler
     jms_serializer.form_error_handler:
         class: AppBundle\Serializer\Handler\FormErrorHandler
         arguments: ['@translator']
         tags:
           - {name: jms_serializer.subscribing_handler}
-
-    app.pagination:
-        class: AppBundle\Pagination\Pagination
-        autowire: true
-
-    app.pagination_param_converter:
-        class: AppBundle\Request\ParamConverter\PaginationParamConverter
-        autowire: true
-        tags:
-            - { name: request.param_converter, priority: 10, converter: pagination }

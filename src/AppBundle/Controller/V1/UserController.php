@@ -8,6 +8,7 @@ use AppBundle\Form\Type\UserCreateType;
 use AppBundle\Form\Type\UserType;
 use AppBundle\Pagination\PaginatedCollection;
 use AppBundle\Pagination\Pagination;
+use AppBundle\Repository\UserRepository;
 use FOS\RestBundle\Controller\Annotations\Delete;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
@@ -26,6 +27,19 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class UserController extends AbstractController
 {
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
+     * @param UserRepository $userRepository
+     */
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * Retrieves the collection of User resources.
      *
@@ -66,24 +80,13 @@ class UserController extends AbstractController
      *
      * @return PaginatedCollection|User[]
      *
-     * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
-     * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
-     * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
-     * @throws \Pagerfanta\Exception\OutOfRangeCurrentPageException
-     * @throws \Pagerfanta\Exception\NotIntegerMaxPerPageException
-     * @throws \Pagerfanta\Exception\NotIntegerCurrentPageException
-     * @throws \Pagerfanta\Exception\LessThan1MaxPerPageException
-     * @throws \Pagerfanta\Exception\LessThan1CurrentPageException
-     * @throws \Pagerfanta\Exception\LogicException
-     * @throws \LogicException
      * @throws \InvalidArgumentException
      */
     public function cgetAction(Request $request, Pagination $pagination)
     {
         $filters = $this->getRequestFilters($request);
-        $repository = $this->getDoctrine()->getRepository(User::class);
 
-        return $repository->search($filters, $pagination);
+        return $this->userRepository->search($filters, $pagination);
     }
 
     /**
@@ -168,8 +171,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->persist($user);
-            $this->getDoctrine()->getManager()->flush();
+            $this->userRepository->save($user);
 
             return $user;
         }
@@ -227,7 +229,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->userRepository->save($user);
 
             return $user;
         }

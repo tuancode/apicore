@@ -35,7 +35,7 @@ security:
             stateless: true
             guard:
                 authenticators:
-                    - app.jwt_token_authenticator
+                    - AppBundle\Security\JwtTokenAuthenticator
 
         main:
             pattern: ^/

@@ -2,12 +2,10 @@
 
 namespace AppBundle\Pagination;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * PaginatedCollection.
  */
-class PaginatedCollection
+class PaginatedCollection implements CollectionInterface
 {
     /**
      * @var array
@@ -25,9 +23,9 @@ class PaginatedCollection
     private $count;
 
     /**
-     * @var ArrayCollection
+     * @var array
      */
-    private $_links;
+    private $links;
 
     /**
      * @param array $items
@@ -38,20 +36,10 @@ class PaginatedCollection
         $this->items = $items;
         $this->total = $totalItems;
         $this->count = \count($items);
-        $this->_links = new ArrayCollection();
     }
 
     /**
-     * @param string $ref
-     * @param string $url
-     */
-    public function addLink(string $ref, string $url): void
-    {
-        $this->_links->set($ref, $url);
-    }
-
-    /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getItems(): array
     {
@@ -59,7 +47,7 @@ class PaginatedCollection
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getTotal(): int
     {
@@ -67,7 +55,7 @@ class PaginatedCollection
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getCount(): int
     {
@@ -75,10 +63,18 @@ class PaginatedCollection
     }
 
     /**
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
-    public function getLinks(): ArrayCollection
+    public function getLinks(): array
     {
-        return $this->_links;
+        return $this->links;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addLink(string $ref, string $url): void
+    {
+        $this->links[$ref] = $url;
     }
 }

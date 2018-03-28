@@ -3,24 +3,25 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\User;
-use AppBundle\Pagination\Pagination;
 use AppBundle\Pagination\PaginationInterface;
-use Doctrine\ORM\EntityRepository;
-use AppBundle\Pagination\PaginatedCollection;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * UserRepository.
  */
-class UserRepository extends EntityRepository
+class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface
 {
     /**
-     * Retrieves the collection of user with filter and pagination supported.
-     *
-     * @param array               $filters    Filters argument
-     * @param PaginationInterface $pagination Optional. Null is disable pagination
-     *
-     * @return User[]|PaginatedCollection Array of User is returned when no pagination,
-     *                                    otherwise the PaginatedCollection is returned
+     * @param RegistryInterface $registry
+     */
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, User::class);
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function search(array $filters = [], PaginationInterface $pagination = null)
     {
@@ -43,5 +44,14 @@ class UserRepository extends EntityRepository
         }
 
         return $builder->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function save(User $user): void
+    {
+        $this->_em->persist($user);
+        $this->_em->flush();
     }
 }
