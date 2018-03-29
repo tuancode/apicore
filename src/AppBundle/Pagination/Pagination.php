@@ -28,11 +28,6 @@ class Pagination implements PaginationInterface
     private $collection;
 
     /**
-     * @var bool
-     */
-    private $pagination = true;
-
-    /**
      * @var int
      */
     private $page = self::FIRST_PAGE;
@@ -74,7 +69,7 @@ class Pagination implements PaginationInterface
         }
 
         if (null != $request->get('pagination')) {
-            $this->pagination = $request->get('pagination');
+            return $builder->getQuery()->getResult();
         }
 
         if (null != $request->get('page')) {
@@ -83,10 +78,6 @@ class Pagination implements PaginationInterface
 
         if (null != $request->get('itemsPerPage')) {
             $this->itemsPerPage = $request->get('itemsPerPage');
-        }
-
-        if (!$this->pagination) {
-            return $builder->getQuery()->getResult();
         }
 
         return $this->createPaginated($builder, $request->get('_route'));

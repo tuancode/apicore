@@ -9,8 +9,12 @@ AppBundle\Entity\User:
             groups: [userDetail, userList]
         getPhone:
             since_version: 1.0
-            groups: [userDetail]
+            groups: [userDetail, userList]
         getStatus:
+            since_version: 1.0
+            groups: [userDetail]
+        isEnabled:
+            serialized_name: enabled
             since_version: 1.0
             groups: [userDetail]
         getCreatedDate:
