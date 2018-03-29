@@ -24,6 +24,12 @@ build:
 	@docker-compose exec php bin/build
 	@docker-compose exec php chown -R www-data:www-data var
 
+
+# Application testing commands
+test:
+	@docker-compose exec php vendor/bin/simple-phpunit
+
+
 # Log management commands
 log-sev:
 	@docker-compose logs -f nginx php

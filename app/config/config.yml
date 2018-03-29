@@ -133,7 +133,7 @@ nelmio_api_doc:
         securityDefinitions:
             Bearer:
                 type: apiKey
-                description: 'Value: Bearer {jwt}'
+                description: 'Value: Bearer {token}'
                 name: Authorization
                 in: header
         security:

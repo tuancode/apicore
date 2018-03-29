@@ -83,7 +83,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setStatus(string $status): User
+    public function setStatus(string $status): self
     {
         $this->status = $status;
 
@@ -103,7 +103,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setPhone(?string $phone): User
+    public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
 
@@ -123,7 +123,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setCreatedDate(): User
+    public function setCreatedDate(): self
     {
         $this->createdDate = new \DateTime();
 
@@ -144,7 +144,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setUpdatedDate(): User
+    public function setUpdatedDate(): self
     {
         $this->updatedDate = new \DateTime();
 

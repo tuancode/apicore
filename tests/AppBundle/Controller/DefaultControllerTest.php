@@ -13,6 +13,7 @@ class DefaultControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertContains('Welcome to Symfony', $crawler->filter('#container h1')->text());
+        $this->assertContains('API Home Page', $crawler->filter('body h1')->text());
+        $this->assertContains('Click here to go to documents', $crawler->filter('body p')->text());
     }
 }
