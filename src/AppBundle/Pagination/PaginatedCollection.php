@@ -31,7 +31,7 @@ class PaginatedCollection implements CollectionInterface
      * @param array $items
      * @param int   $totalItems
      */
-    public function __construct(array $items, int $totalItems)
+    public function setResource(array $items, int $totalItems): void
     {
         $this->items = $items;
         $this->total = $totalItems;

@@ -6,9 +6,9 @@ use AppBundle\Controller\AbstractController;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\UserCreateType;
 use AppBundle\Form\Type\UserType;
-use AppBundle\Pagination\PaginatedCollection;
-use AppBundle\Pagination\Pagination;
-use AppBundle\Repository\UserRepository;
+use AppBundle\Pagination\CollectionInterface;
+use AppBundle\Pagination\PaginationInterface;
+use AppBundle\Repository\UserRepositoryInterface;
 use FOS\RestBundle\Controller\Annotations\Delete;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
@@ -28,14 +28,14 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class UserController extends AbstractController
 {
     /**
-     * @var UserRepository
+     * @var UserRepositoryInterface
      */
     private $userRepository;
 
     /**
-     * @param UserRepository $userRepository
+     * @param UserRepositoryInterface $userRepository
      */
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
     }
@@ -75,18 +75,19 @@ class UserController extends AbstractController
      *
      * @Get("/user")
      *
-     * @param Request    $request
-     * @param Pagination $pagination
+     * @param Request             $request
+     * @param PaginationInterface $pagination
      *
-     * @return PaginatedCollection|User[]
+     * @return CollectionInterface|User[]
      *
      * @throws \InvalidArgumentException
      */
-    public function cgetAction(Request $request, Pagination $pagination)
+    public function cgetAction(Request $request, PaginationInterface $pagination)
     {
         $filters = $this->getRequestFilters($request);
+        $builder = $this->userRepository->searchBuilder($filters);
 
-        return $this->userRepository->search($filters, $pagination);
+        return $pagination->createCollection($builder, $request);
     }
 
     /**

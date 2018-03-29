@@ -5,37 +5,18 @@ namespace AppBundle\Pagination;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * PaginationInterface.
+ * PaginationInterface defines behavior structure of concrete pagination.
  */
 interface PaginationInterface
 {
     /**
-     * Create a pagination collection.
+     * Create a collection from query builder.
      *
      * @param QueryBuilder $builder
+     * @param mixed        $request
+     * @param array        $routeParams
      *
-     * @return PaginatedCollection
+     * @return CollectionInterface|array
      */
-    public function createCollection(QueryBuilder $builder): PaginatedCollection;
-
-    /**
-     * Whether pagination is enable or not.
-     *
-     * @return bool
-     */
-    public function isPagination(): bool;
-
-    /**
-     * Set up pagination information from request.
-     *
-     * @param mixed $request
-     */
-    public function setRequest($request);
-
-    /**
-     * Set up route params.
-     *
-     * @param array $routeParams
-     */
-    public function setRouteParams(array $routeParams = []);
+    public function createCollection(QueryBuilder $builder, $request, array $routeParams = []);
 }

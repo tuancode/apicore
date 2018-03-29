@@ -3,8 +3,8 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\User;
-use AppBundle\Pagination\PaginationInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -23,27 +23,23 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
     /**
      * {@inheritdoc}
      */
-    public function search(array $filters = [], PaginationInterface $pagination = null)
+    public function searchBuilder(array $filter = []): QueryBuilder
     {
         $builder = $this->createQueryBuilder('u');
 
-        if (!empty($filters['email'])) {
-            $builder->andWhere('u.email = :email')->setParameter('email', $filters['email']);
+        if (!empty($filter['email'])) {
+            $builder->andWhere('u.email = :email')->setParameter('email', $filter['email']);
         }
 
-        if (!empty($filters['phone'])) {
-            $builder->andWhere('u.phone = :phone')->setParameter('phone', $filters['phone']);
+        if (!empty($filter['phone'])) {
+            $builder->andWhere('u.phone = :phone')->setParameter('phone', $filter['phone']);
         }
 
-        if (!empty($filters['status'])) {
-            $builder->andWhere('u.status = :status')->setParameter('status', $filters['status']);
+        if (!empty($filter['status'])) {
+            $builder->andWhere('u.status = :status')->setParameter('status', $filter['status']);
         }
 
-        if ($pagination && $pagination->isPagination()) {
-            return $pagination->createCollection($builder);
-        }
-
-        return $builder->getQuery()->getResult();
+        return $builder;
     }
 
     /**

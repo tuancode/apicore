@@ -3,31 +3,26 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\User;
-use AppBundle\Pagination\PaginatedCollection;
-use AppBundle\Pagination\PaginationInterface;
+use Doctrine\ORM\QueryBuilder;
 
 /**
- * UserRepository.
+ * UserRepositoryInterface defines behavior structure of concrete user repository.
  */
 interface UserRepositoryInterface
 {
     /**
      * Retrieves the collection of user with filter and pagination supported.
      *
-     * @param array               $filters    Filters argument
-     * @param PaginationInterface $pagination Optional. Null is disable pagination
+     * @param array $filter
      *
-     * @return User[]|PaginatedCollection Array of User is returned when no pagination,
-     *                                    otherwise the PaginatedCollection is returned
+     * @return QueryBuilder
      */
-    public function search(array $filters = [], PaginationInterface $pagination = null);
+    public function searchBuilder(array $filter = []): QueryBuilder;
 
     /**
-     * Store user to database.
+     * Communicate with persistent layer to persist and update User to database.
      *
      * @param User $user
-     *
-     * @return mixed
      */
-    public function save(User $user);
+    public function save(User $user): void;
 }

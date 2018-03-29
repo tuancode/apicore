@@ -23,14 +23,9 @@ class Pagination implements PaginationInterface
     private $router;
 
     /**
-     * @var string
+     * @var CollectionInterface
      */
-    private $route;
-
-    /**
-     * @var array
-     */
-    private $routeParams = [];
+    private $collection;
 
     /**
      * @var bool
@@ -48,11 +43,13 @@ class Pagination implements PaginationInterface
     private $itemsPerPage = self::ITEMS_PER_PAGE;
 
     /**
-     * @param RouterInterface $router
+     * @param RouterInterface     $router
+     * @param CollectionInterface $collection
      */
-    public function __construct(RouterInterface $router)
+    public function __construct(RouterInterface $router, CollectionInterface $collection)
     {
         $this->router = $router;
+        $this->collection = $collection;
     }
 
     /**
@@ -68,49 +65,7 @@ class Pagination implements PaginationInterface
      * @throws \Pagerfanta\Exception\NotIntegerMaxPerPageException
      * @throws \Pagerfanta\Exception\LessThan1MaxPerPageException
      */
-    public function createCollection(QueryBuilder $builder): PaginatedCollection
-    {
-        $pager = new Pagerfanta(new DoctrineORMAdapter($builder, false));
-        $pager->setMaxPerPage($this->itemsPerPage);
-        $pager->setCurrentPage($this->page);
-
-        $resources = [];
-        foreach ($pager->getCurrentPageResults() as $result) {
-            $resources[] = $result;
-        }
-
-        $createLinkUrl = function ($targetPage) {
-            return $this->router->generate($this->route, array_merge($this->routeParams, ['page' => $targetPage]));
-        };
-
-        $paginatedCollection = new PaginatedCollection($resources, $pager->getNbResults());
-        $paginatedCollection->addLink('self', $createLinkUrl($this->page));
-        $paginatedCollection->addLink('first', $createLinkUrl(self::FIRST_PAGE));
-        $paginatedCollection->addLink('last', $createLinkUrl($pager->getNbPages()));
-        if ($pager->hasNextPage()) {
-            $paginatedCollection->addLink('next', $createLinkUrl($pager->getNextPage()));
-        }
-        if ($pager->hasPreviousPage()) {
-            $paginatedCollection->addLink('prev', $createLinkUrl($pager->getPreviousPage()));
-        }
-
-        return $paginatedCollection;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isPagination(): bool
-    {
-        return $this->pagination;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function setRequest($request): self
+    public function createCollection(QueryBuilder $builder, $request, array $routeParams = [])
     {
         if (!$request instanceof Request && !$request instanceof ParamFetcher) {
             throw new \InvalidArgumentException(
@@ -130,18 +85,46 @@ class Pagination implements PaginationInterface
             $this->itemsPerPage = $request->get('itemsPerPage');
         }
 
-        $this->route = $request->get('_route');
+        if (!$this->pagination) {
+            return $builder->getQuery()->getResult();
+        }
 
-        return $this;
+        return $this->createPaginated($builder, $request->get('_route'));
     }
 
     /**
-     * {@inheritdoc}
+     * @param QueryBuilder $builder
+     * @param string|null  $route
+     * @param array        $routeParams
+     *
+     * @return CollectionInterface
      */
-    public function setRouteParams(array $routeParams = []): self
+    private function createPaginated(QueryBuilder $builder, string $route, array $routeParams = []): CollectionInterface
     {
-        $this->routeParams = $routeParams;
+        $pager = new Pagerfanta(new DoctrineORMAdapter($builder, false));
+        $pager->setMaxPerPage($this->itemsPerPage);
+        $pager->setCurrentPage($this->page);
 
-        return $this;
+        $resources = [];
+        foreach ($pager->getCurrentPageResults() as $result) {
+            $resources[] = $result;
+        }
+
+        $createLinkUrl = function ($targetPage) use ($route, $routeParams) {
+            return $this->router->generate($route, array_merge($routeParams, ['page' => $targetPage]));
+        };
+
+        $this->collection->setResource($resources, $pager->getNbResults());
+        $this->collection->addLink('self', $createLinkUrl($this->page));
+        $this->collection->addLink('first', $createLinkUrl(self::FIRST_PAGE));
+        $this->collection->addLink('last', $createLinkUrl($pager->getNbPages()));
+        if ($pager->hasNextPage()) {
+            $this->collection->addLink('next', $createLinkUrl($pager->getNextPage()));
+        }
+        if ($pager->hasPreviousPage()) {
+            $this->collection->addLink('prev', $createLinkUrl($pager->getPreviousPage()));
+        }
+
+        return $this->collection;
     }
 }
