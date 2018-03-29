@@ -25,4 +25,11 @@ interface UserRepositoryInterface
      * @param User $user
      */
     public function save(User $user): void;
+
+    /**
+     * Removes the User resource.
+     *
+     * @param User $user
+     */
+    public function remove(User $user): void;
 }

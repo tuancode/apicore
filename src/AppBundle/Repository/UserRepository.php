@@ -50,4 +50,13 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         $this->_em->persist($user);
         $this->_em->flush();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove(User $user): void
+    {
+        $user->setStatus(User::STATUS_REMOVED);
+        $this->_em->flush();
+    }
 }

@@ -263,28 +263,25 @@ class UserController extends AbstractController
      *     )
      * )
      *
-     * @View(
-     *     serializerGroups={"userDetail"}
-     * )
+     * @View()
      *
      * @Delete("/user/{id}")
      *
      * @param User $user
      *
-     * @return User
+     * @return bool
      *
      * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
      * @throws \LogicException
      */
-    public function deleteAction(User $user): User
+    public function deleteAction(User $user): bool
     {
         if (User::STATUS_REMOVED === $user->getStatus()) {
             throw new BadRequestHttpException('User is removed already');
         }
 
-        $user->setStatus(User::STATUS_REMOVED);
-        $this->getDoctrine()->getManager()->flush();
+        $this->userRepository->remove($user);
 
-        return $user;
+        return true;
     }
 }
