@@ -50,6 +50,7 @@ class Pagination implements PaginationInterface
     /**
      * {@inheritdoc}
      *
+     * @throws \InvalidArgumentException
      * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
      * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
      * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
@@ -89,6 +90,13 @@ class Pagination implements PaginationInterface
      * @param array        $routeParams
      *
      * @return CollectionInterface
+     *
+     * @throws \Pagerfanta\Exception\LogicException
+     * @throws \Pagerfanta\Exception\OutOfRangeCurrentPageException
+     * @throws \Pagerfanta\Exception\NotIntegerCurrentPageException
+     * @throws \Pagerfanta\Exception\LessThan1CurrentPageException
+     * @throws \Pagerfanta\Exception\NotIntegerMaxPerPageException
+     * @throws \Pagerfanta\Exception\LessThan1MaxPerPageException
      */
     private function createPaginated(QueryBuilder $builder, string $route, array $routeParams = []): CollectionInterface
     {
