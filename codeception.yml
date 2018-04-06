@@ -5,6 +5,12 @@ paths:
     support: tests/_support
     envs: tests/_envs
 actor_suffix: Tester
+settings:
+    bootstrap: _bootstrap.php
+    colors: true
+    memory_limit: 1024M
+    shuffle: false
+    lint: true
 extensions:
     enabled:
         - Codeception\Extension\RunFailed

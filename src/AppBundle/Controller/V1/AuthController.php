@@ -28,7 +28,7 @@ class AuthController extends AbstractController
      * @Operation(
      *     summary="Login",
      *     consumes={"multipart/form-data"},
-     *     tags={"/auth/v1"},
+     *     tags={"/api/v1/auth"},
      *     @SWG\Response(
      *         response=200,
      *         description="Login",
@@ -97,7 +97,7 @@ class AuthController extends AbstractController
      *
      * @Operation(
      *     summary="Registration",
-     *     tags={"/auth/v1"},
+     *     tags={"/api/v1/auth"},
      *     @SWG\Parameter(
      *         name="param",
      *         in="body",

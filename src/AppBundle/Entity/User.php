@@ -162,7 +162,8 @@ class User extends BaseUser
     {
         $metadata->addConstraints(
             [
-                new UniqueEntity(['fields' => ['email', 'phone']]),
+                new UniqueEntity(['fields' => 'email']),
+                new UniqueEntity(['fields' => 'phone']),
             ]
         );
 

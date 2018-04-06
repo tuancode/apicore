@@ -42,6 +42,7 @@
   "require-dev": {
     "codeception/codeception": "^2.4",
     "doctrine/doctrine-fixtures-bundle": "^3.0",
+    "flow/jsonpath": "^0.4.0",
     "sensio/generator-bundle": "^3.0",
     "symfony/phpunit-bridge": "^3.0"
   },

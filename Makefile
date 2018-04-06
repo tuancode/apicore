@@ -27,7 +27,7 @@ build:
 
 # Application testing commands
 test:
-	@docker-compose exec php vendor/bin/simple-phpunit
+	@docker-compose exec php vendor/bin/codecept run
 
 
 # Log management commands

@@ -15,17 +15,17 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        auth_register:
-            pattern:   ^/auth/v1/register
+        api_register:
+            pattern:   ^/api/v1/register
             anonymous: true
             logout_on_user_change: true
 
-        auth_login:
-            pattern:  ^/auth/v1/login
+        api_login:
+            pattern:  ^/api/v1/login
             stateless: true
             anonymous: true
             form_login:
-                check_path:               /auth/v1/login_check
+                check_path:               /api/v1/login_check
                 success_handler:          lexik_jwt_authentication.handler.authentication_success
                 failure_handler:          lexik_jwt_authentication.handler.authentication_failure
                 require_previous_session: false
@@ -43,9 +43,9 @@ security:
             logout_on_user_change: true
 
     access_control:
-        - { path: ^/auth/v1/register,   roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/auth/v1/login,      roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/auth/v1,            roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/v1/register,   roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/login,      roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1,            roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api,                roles: IS_AUTHENTICATED_FULLY }
 
     role_hierarchy:
