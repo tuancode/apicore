@@ -42,6 +42,8 @@ class RegisterCest
     }
 
     /**
+     * @before createUserInRepository
+     *
      * @param ApiTester $I
      *
      * @throws Exception
@@ -67,9 +69,7 @@ class RegisterCest
         );
 
         $I->comment('---Duplicate Email---');
-        $I->sendPOST('/register.json', ['email' => 'dup@test.net', 'password' => '123456', 'phone' => '+841208777255']);
-        $I->seeResponseCodeIs(HttpCode::OK);
-        $I->sendPOST('/register.json', ['email' => 'dup@test.net', 'password' => '123456', 'phone' => '+841208777215']);
+        $I->sendPOST('/register.json', ['email' => 'user@test.net', 'password' => '123456', 'phone' => '+8412087215']);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseContainsJson(
             [
@@ -96,6 +96,8 @@ class RegisterCest
     }
 
     /**
+     * @before createUserInRepository
+     *
      * @param ApiTester $I
      *
      * @throws Exception
@@ -112,13 +114,29 @@ class RegisterCest
         );
 
         $I->comment('---Duplicate Phone---');
-        $I->sendPOST('/register.json', ['email' => 'test1@test.net', 'password' => '123456', 'phone' => '+841208255']);
-        $I->seeResponseCodeIs(HttpCode::OK);
-        $I->sendPOST('/register.json', ['email' => 'test2@test.net', 'password' => '123456', 'phone' => '+841208255']);
+        $I->sendPOST('/register.json', ['email' => 'test@test.net', 'password' => '123456', 'phone' => '+8412000001']);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseContainsJson(
             [
                 'phone' => ['This value is already used.'],
+            ]
+        );
+    }
+
+    /**
+     * @param ApiTester $I
+     */
+    protected function createUserInRepository(\ApiTester $I)
+    {
+        $I->haveInRepository(
+            User::class,
+            [
+                'username' => 'user@test.net',
+                'email' => 'user@test.net',
+                'plainPassword' => '123456',
+                'phone' => '+8412000001',
+                'status' => User::STATUS_ACTIVE,
+                'enabled' => 1,
             ]
         );
     }
