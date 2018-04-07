@@ -1,7 +1,6 @@
 <?php
 
 use Codeception\Util\HttpCode;
-use AppBundle\Entity\User;
 
 /**
  * LoginCest.
@@ -9,15 +8,18 @@ use AppBundle\Entity\User;
 class LoginCest
 {
     /**
-     * @before createUserInRepository
-     *
-     * @param ApiTester $I
-     *
-     * @throws Exception
+     * @var string
      */
-    public function testLoginSuccessful(\ApiTester $I)
+    private $url = '/login.json';
+
+    /**
+     * @param ApiTester      $I
+     * @param \Step\Api\User $u
+     */
+    public function testLoginSuccessful(\ApiTester $I, \Step\Api\User $u)
     {
-        $I->sendPOST('/login.json', ['email' => 'login@test.net', 'password' => '123456']);
+        $user = $u->createDummyUser();
+        $I->sendPOST($this->url, ['email' => $user->getEmail(), 'password' => $user->getPassword()]);
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->seeResponseMatchesJsonType(
             [
@@ -27,20 +29,18 @@ class LoginCest
     }
 
     /**
-     * @before createUserInRepository
-     *
-     * @param ApiTester $I
-     *
-     * @throws Exception
+     * @param ApiTester      $I
+     * @param \Step\Api\User $u
      */
-    public function testLoginFailed(\ApiTester $I)
+    public function testLoginFailed(\ApiTester $I, \Step\Api\User $u)
     {
         $I->comment('---Not found User---');
-        $I->sendPOST('/login.json', ['email' => 'nouser@test.net', 'password' => 'failed']);
+        $I->sendPOST($this->url, ['email' => 'nouser@test.net', 'password' => 'failed']);
         $I->seeResponseCodeIs(HttpCode::NOT_FOUND);
 
         $I->comment('---Unauthorized---');
-        $I->sendPOST('/login.json', ['email' => 'login@test.net', 'password' => 'failed']);
+        $user = $u->createDummyUser();
+        $I->sendPOST($this->url, ['email' => $user->getEmail(), 'password' => 'failed']);
         $I->seeResponseCodeIs(HttpCode::UNAUTHORIZED);
         $I->seeResponseContainsJson(
             [
@@ -48,24 +48,6 @@ class LoginCest
                     'code' => 401,
                     'message' => 'Unauthorized',
                 ],
-            ]
-        );
-    }
-
-    /**
-     * @param ApiTester $I
-     */
-    protected function createUserInRepository(\ApiTester $I)
-    {
-        $I->haveInRepository(
-            User::class,
-            [
-                'username' => 'login@test.net',
-                'email' => 'login@test.net',
-                'plainPassword' => '123456',
-                'phone' => '+841200000001',
-                'status' => User::STATUS_ACTIVE,
-                'enabled' => 1,
             ]
         );
     }
