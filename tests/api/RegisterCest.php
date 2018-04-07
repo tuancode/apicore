@@ -46,8 +46,9 @@ class RegisterCest
      *
      * @throws Exception
      */
-    public function testRegisterByEmailBlank(\ApiTester $I)
+    public function testRegisterByInvalidEmail(\ApiTester $I)
     {
+        $I->comment('---Blank Email---');
         $I->sendPOST('/register.json', ['email' => '', 'password' => '123456', 'phone' => '+841208777245']);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseContainsJson(
@@ -55,15 +56,8 @@ class RegisterCest
                 'email' => ['This value should not be blank.'],
             ]
         );
-    }
 
-    /**
-     * @param ApiTester $I
-     *
-     * @throws Exception
-     */
-    public function testRegisterByEmailInvalid(\ApiTester $I)
-    {
+        $I->comment('---Invalid Email---');
         $I->sendPOST('/register.json', ['email' => 'email', 'password' => '123456', 'phone' => '+841208777245']);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseContainsJson(
@@ -71,18 +65,10 @@ class RegisterCest
                 'email' => ['This value is not a valid email address.'],
             ]
         );
-    }
 
-    /**
-     * @param ApiTester $I
-     *
-     * @throws Exception
-     */
-    public function testRegisterByEmailDuplicate(\ApiTester $I)
-    {
+        $I->comment('---Duplicate Email---');
         $I->sendPOST('/register.json', ['email' => 'dup@test.net', 'password' => '123456', 'phone' => '+841208777255']);
         $I->seeResponseCodeIs(HttpCode::OK);
-
         $I->sendPOST('/register.json', ['email' => 'dup@test.net', 'password' => '123456', 'phone' => '+841208777215']);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseContainsJson(
@@ -97,8 +83,9 @@ class RegisterCest
      *
      * @throws Exception
      */
-    public function testRegisterByPasswordBlank(\ApiTester $I)
+    public function testRegisterByInvalidPassword(\ApiTester $I)
     {
+        $I->comment('---Blank Password---');
         $I->sendPOST('/register.json', ['email' => 'test@example.net', 'password' => '', 'phone' => '+841208777245']);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseContainsJson(
@@ -113,8 +100,9 @@ class RegisterCest
      *
      * @throws Exception
      */
-    public function testRegisterByPhoneInvalid(\ApiTester $I)
+    public function testRegisterByInvalidPhone(\ApiTester $I)
     {
+        $I->comment('---Invalid Phone---');
         $I->sendPOST('/register.json', ['email' => 'test@example.net', 'password' => '123456', 'phone' => '08777245']);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseContainsJson(
@@ -122,18 +110,10 @@ class RegisterCest
                 'phone' => ['This value is not valid.'],
             ]
         );
-    }
 
-    /**
-     * @param ApiTester $I
-     *
-     * @throws Exception
-     */
-    public function testRegisterByPhoneDuplicate(\ApiTester $I)
-    {
+        $I->comment('---Duplicate Phone---');
         $I->sendPOST('/register.json', ['email' => 'test1@test.net', 'password' => '123456', 'phone' => '+841208255']);
         $I->seeResponseCodeIs(HttpCode::OK);
-
         $I->sendPOST('/register.json', ['email' => 'test2@test.net', 'password' => '123456', 'phone' => '+841208255']);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseContainsJson(

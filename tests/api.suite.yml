@@ -9,12 +9,6 @@ modules:
             depends: Symfony
             cleanup: true
         - \Helper\Api
-        - Db:
-            dsn: mysql:host=mysql;dbname=apicore_test
-            user: apicore
-            password: apicore
-            populate: true
-            reconnect: true
     config:
         - Symfony:
             app_path: 'src'
