@@ -1,6 +1,7 @@
 <?php
 
 use Codeception\Util\HttpCode;
+use Step\Api\UserStep;
 
 /**
  * LoginCest.
@@ -13,10 +14,10 @@ class LoginCest
     private $url = '/login.json';
 
     /**
-     * @param ApiTester      $I
-     * @param \Step\Api\User $u
+     * @param ApiTester          $I
+     * @param \Step\Api\UserStep $u
      */
-    public function loginSuccess(\ApiTester $I, \Step\Api\User $u)
+    public function loginSuccess(\ApiTester $I, UserStep $u)
     {
         $user = $u->createDummyUser();
         $I->sendPOST($this->url, ['email' => $user->getEmail(), 'password' => $user->getPassword()]);
@@ -29,10 +30,10 @@ class LoginCest
     }
 
     /**
-     * @param ApiTester      $I
-     * @param \Step\Api\User $u
+     * @param ApiTester          $I
+     * @param \Step\Api\UserStep $u
      */
-    public function loginFailed(\ApiTester $I, \Step\Api\User $u)
+    public function loginFailed(\ApiTester $I, UserStep $u)
     {
         $I->comment('---Not found User---');
         $I->sendPOST($this->url, ['email' => 'nouser@test.net', 'password' => 'failed']);

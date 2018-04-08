@@ -11,5 +11,5 @@ modules:
         - \Helper\Api
     config:
         - Symfony:
-            app_path: 'src'
+            app_path: 'app'
             environment: 'test'

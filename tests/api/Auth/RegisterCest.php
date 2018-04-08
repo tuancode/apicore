@@ -2,6 +2,7 @@
 
 use Codeception\Util\HttpCode;
 use AppBundle\Entity\User;
+use Step\Api\UserStep;
 
 /**
  * RegisterCest.
@@ -47,10 +48,10 @@ class RegisterCest
     }
 
     /**
-     * @param ApiTester      $I
-     * @param \Step\Api\User $u
+     * @param ApiTester          $I
+     * @param \Step\Api\UserStep $u
      */
-    public function registerByInvalidEmail(\ApiTester $I, \Step\Api\User $u)
+    public function registerByInvalidEmail(\ApiTester $I, UserStep $u)
     {
         $I->comment('---Blank Email---');
         $I->sendPOST($this->url, ['email' => '', 'password' => '123456', 'phone' => '+841208777245']);
@@ -99,10 +100,10 @@ class RegisterCest
     }
 
     /**
-     * @param ApiTester      $I
-     * @param \Step\Api\User $u
+     * @param ApiTester          $I
+     * @param \Step\Api\UserStep $u
      */
-    public function registerByInvalidPhone(\ApiTester $I, \Step\Api\User $u)
+    public function registerByInvalidPhone(\ApiTester $I, UserStep $u)
     {
         $I->comment('---Invalid Phone---');
         $I->sendPOST($this->url, ['email' => 'test@example.net', 'password' => '123456', 'phone' => '08777245']);
