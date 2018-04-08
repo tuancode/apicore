@@ -33,4 +33,9 @@ class User extends \ApiTester
 
         return $user;
     }
+
+    public function loginAsUser()
+    {
+        
+    }
 }

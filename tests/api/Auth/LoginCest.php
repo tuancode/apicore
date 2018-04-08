@@ -16,7 +16,7 @@ class LoginCest
      * @param ApiTester      $I
      * @param \Step\Api\User $u
      */
-    public function testLoginSuccessful(\ApiTester $I, \Step\Api\User $u)
+    public function loginSuccess(\ApiTester $I, \Step\Api\User $u)
     {
         $user = $u->createDummyUser();
         $I->sendPOST($this->url, ['email' => $user->getEmail(), 'password' => $user->getPassword()]);
@@ -32,7 +32,7 @@ class LoginCest
      * @param ApiTester      $I
      * @param \Step\Api\User $u
      */
-    public function testLoginFailed(\ApiTester $I, \Step\Api\User $u)
+    public function loginFailed(\ApiTester $I, \Step\Api\User $u)
     {
         $I->comment('---Not found User---');
         $I->sendPOST($this->url, ['email' => 'nouser@test.net', 'password' => 'failed']);

@@ -25,6 +25,13 @@ build:
 	@docker-compose exec php chown -R www-data:www-data var
 
 
+# Clean application
+clean:
+	@docker-compose exec php bin/console cache:clear --env=prod --no-warmup --no-debug
+	@docker-compose exec php bin/console cache:clear --env=dev --no-warmup
+	@docker-compose exec php bin/console cache:clear --env=test --no-warmup
+
+
 # Application testing commands
 test:
 	@docker-compose exec php vendor/bin/codecept run

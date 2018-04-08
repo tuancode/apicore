@@ -18,7 +18,7 @@ class RegisterCest
      *
      * @throws Exception
      */
-    public function testRegisterSuccessful(\ApiTester $I)
+    public function registerSuccess(\ApiTester $I)
     {
         $email = 'test@test.net';
         $password = '123456';
@@ -50,7 +50,7 @@ class RegisterCest
      * @param ApiTester      $I
      * @param \Step\Api\User $u
      */
-    public function testRegisterByInvalidEmail(\ApiTester $I, \Step\Api\User $u)
+    public function registerByInvalidEmail(\ApiTester $I, \Step\Api\User $u)
     {
         $I->comment('---Blank Email---');
         $I->sendPOST($this->url, ['email' => '', 'password' => '123456', 'phone' => '+841208777245']);
@@ -86,7 +86,7 @@ class RegisterCest
      *
      * @throws Exception
      */
-    public function testRegisterByInvalidPassword(\ApiTester $I)
+    public function registerByInvalidPassword(\ApiTester $I)
     {
         $I->comment('---Blank Password---');
         $I->sendPOST($this->url, ['email' => 'test@example.net', 'password' => '', 'phone' => '+841208777245']);
@@ -102,7 +102,7 @@ class RegisterCest
      * @param ApiTester      $I
      * @param \Step\Api\User $u
      */
-    public function testRegisterByInvalidPhone(\ApiTester $I, \Step\Api\User $u)
+    public function registerByInvalidPhone(\ApiTester $I, \Step\Api\User $u)
     {
         $I->comment('---Invalid Phone---');
         $I->sendPOST($this->url, ['email' => 'test@example.net', 'password' => '123456', 'phone' => '08777245']);
