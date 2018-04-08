@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Controller\V1;
+namespace AppBundle\Controller;
 
-use AppBundle\Controller\AbstractController;
+use AppBundle\Controller\Traits\RequestTrait;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\UserCreateType;
 use AppBundle\Form\Type\UserType;
@@ -15,6 +15,8 @@ use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\Put;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\View;
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Routing\ClassResourceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Swagger\Annotations as SWG;
@@ -25,8 +27,10 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 /**
  * UserController.
  */
-class UserController extends AbstractController
+class UserController extends FOSRestController implements ClassResourceInterface
 {
+    use RequestTrait;
+
     /**
      * @var UserRepositoryInterface
      */

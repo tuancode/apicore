@@ -1,16 +1,14 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Traits;
 
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcher;
-use FOS\RestBundle\Routing\ClassResourceInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * RestController.
+ * Trait RequestTrait.
  */
-abstract class AbstractController extends FOSRestController implements ClassResourceInterface
+trait RequestTrait
 {
     /**
      * Extract query filters from request.

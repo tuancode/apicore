@@ -1,0 +1,7 @@
+auth:
+    resource: "@AppBundle/Controller/AuthController.php"
+    type: rest
+
+user:
+    resource: "@AppBundle/Controller/UserController.php"
+    type: rest

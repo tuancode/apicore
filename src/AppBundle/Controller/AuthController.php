@@ -1,14 +1,15 @@
 <?php
 
-namespace AppBundle\Controller\V1;
+namespace AppBundle\Controller;
 
-use AppBundle\Controller\AbstractController;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\RegisterType;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Controller\Annotations\View;
+use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcher;
+use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\UserBundle\Model\UserInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
@@ -20,7 +21,7 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 /**
  * AuthController.
  */
-class AuthController extends AbstractController
+class AuthController extends FOSRestController implements ClassResourceInterface
 {
     /**
      * API Login.
@@ -122,6 +123,8 @@ class AuthController extends AbstractController
      * @param Request $request
      *
      * @return UserInterface|FormInterface
+     *
+     * @throws \LogicException
      */
     public function registerAction(Request $request)
     {
