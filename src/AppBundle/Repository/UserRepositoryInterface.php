@@ -3,12 +3,13 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\User;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
 
 /**
  * UserRepositoryInterface defines behavior structure of concrete user repository.
  */
-interface UserRepositoryInterface
+interface UserRepositoryInterface extends ObjectRepository
 {
     /**
      * Retrieves the collection of user with filter and pagination supported.

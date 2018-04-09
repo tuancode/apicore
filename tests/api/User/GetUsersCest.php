@@ -3,6 +3,7 @@
 namespace User;
 
 use Codeception\Util\HttpCode;
+use Helper\Api;
 use Step\Api\UserStep;
 
 /**
@@ -31,7 +32,7 @@ class GetUsersCest
     /**
      * @param \ApiTester $I
      */
-    public function unauthorized(\ApiTester $I)
+    public function unauthorized(\ApiTester $I): void
     {
         $I->sendGET($this->url);
         $I->seeResponseCodeIs(HttpCode::UNAUTHORIZED);
@@ -44,7 +45,7 @@ class GetUsersCest
      *
      * @throws \Exception
      */
-    public function getUsersSuccessWithPagination(\ApiTester $I, UserStep $u)
+    public function getUsersSuccessWithPagination(\ApiTester $I, UserStep $u): void
     {
         $u->login();
         foreach (static::$users as $index => $user) {
@@ -70,7 +71,7 @@ class GetUsersCest
      *
      * @throws \Exception
      */
-    public function getUsersSuccessWithoutPagination(\ApiTester $I, UserStep $u)
+    public function getUsersSuccessWithoutPagination(\ApiTester $I, UserStep $u, Api $api): void
     {
         $u->login();
         foreach (static::$users as $index => $user) {

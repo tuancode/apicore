@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\RegisterType;
+use AppBundle\Repository\UserRepositoryInterface;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Controller\Annotations\View;
@@ -11,18 +12,33 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\UserBundle\Model\UserInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * AuthController.
  */
 class AuthController extends FOSRestController implements ClassResourceInterface
 {
+    /**
+     * @var UserRepositoryInterface
+     */
+    private $userRepository;
+
+    /**
+     * @param UserRepositoryInterface $userRepository
+     */
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * API Login.
      *
@@ -56,39 +72,37 @@ class AuthController extends FOSRestController implements ClassResourceInterface
      *
      * @Post("/login")
      *
-     * @param ParamFetcher $fetcher
+     * @param ParamFetcher                 $fetcher
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param JWTEncoderInterface          $jwtEncoder
      *
      * @return array
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws \Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTEncodeFailureException
-     * @throws \LogicException
      */
-    public function loginAction(ParamFetcher $fetcher): array
-    {
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findOneBy(['email' => $fetcher->get('email')]);
-
-        if (!$user) {
+    public function loginAction(
+        ParamFetcher $fetcher,
+        UserPasswordEncoderInterface $passwordEncoder,
+        JWTEncoderInterface $jwtEncoder
+    ): array {
+        $user = $this->userRepository->findOneBy(['email' => $fetcher->get('email')]);
+        if (!$user instanceof User) {
             throw $this->createNotFoundException();
         }
 
-        $isValid = $this->get('security.password_encoder')
-            ->isPasswordValid($user, $fetcher->get('password'));
-
+        $isValid = $passwordEncoder->isPasswordValid($user, $fetcher->get('password'));
         if (!$isValid) {
             throw new UnauthorizedHttpException('Invalid credentials');
         }
 
-        $token = $this->get('lexik_jwt_authentication.encoder')
-            ->encode(
-                [
-                    'username' => $user->getEmail(),
-                    'exp' => time() + 3600, // 1 hour expiration
-                ]
-            );
+        $token = $jwtEncoder->encode(
+            [
+                'username' => $user->getEmail(),
+                'exp' => time() + 3600, // 1 hour expiration
+            ]
+        );
 
         return ['access_token' => $token];
     }
@@ -134,11 +148,8 @@ class AuthController extends FOSRestController implements ClassResourceInterface
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setStatus(User::STATUS_ACTIVE);
             $user->setEnabled(true);
-
-            $this->getDoctrine()->getManager()->persist($user);
-            $this->getDoctrine()->getManager()->flush();
+            $this->userRepository->save($user);
 
             return $user;
         }
