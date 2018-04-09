@@ -44,11 +44,9 @@ class GetUsersCest
      *
      * @throws \Exception
      */
-    public function getUsersSuccess(\ApiTester $I, UserStep $u)
+    public function getUsersSuccessWithPagination(\ApiTester $I, UserStep $u)
     {
-        $user = $u->createDummyUser();
-        $u->loginAs($user);
-
+        $u->login();
         foreach (static::$users as $index => $user) {
             $u->createUser($user['email'], 123456, $user['phone']);
         }
@@ -64,5 +62,32 @@ class GetUsersCest
             ]
         );
         $I->seeResponseContainsJson(['items' => static::$users]);
+    }
+
+    /**
+     * @param \ApiTester $I
+     * @param UserStep   $u
+     *
+     * @throws \Exception
+     */
+    public function getUsersSuccessWithoutPagination(\ApiTester $I, UserStep $u)
+    {
+        $u->login();
+        foreach (static::$users as $index => $user) {
+            $u->createUser($user['email'], 123456, $user['phone']);
+        }
+
+        $I->sendGET($this->url.'?pagination=0');
+        $I->seeResponseCodeIs(HttpCode::OK);
+        $I->seeResponseMatchesJsonType(
+            [
+                'id' => 'integer',
+                'email' => 'string',
+                'phone' => 'string',
+                'created_date' => 'string',
+                'updated_date' => 'string',
+            ]
+        );
+        $I->seeResponseContainsJson(static::$users);
     }
 }

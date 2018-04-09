@@ -14,13 +14,11 @@ class LoginCest
     private $url = '/login.json';
 
     /**
-     * @param ApiTester          $I
-     * @param \Step\Api\UserStep $u
+     * @param ApiTester $I
      */
-    public function loginSuccess(\ApiTester $I, UserStep $u)
+    public function loginSuccess(\ApiTester $I): void
     {
-        $user = $u->createDummyUser();
-        $I->sendPOST($this->url, ['email' => $user->getEmail(), 'password' => $user->getPassword()]);
+        $I->sendPOST($this->url, ['email' => UserStep::ADMIN_EMAIL, 'password' => UserStep::ADMIN_PASSWORD]);
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->seeResponseMatchesJsonType(
             [
@@ -30,18 +28,16 @@ class LoginCest
     }
 
     /**
-     * @param ApiTester          $I
-     * @param \Step\Api\UserStep $u
+     * @param ApiTester $I
      */
-    public function loginFailed(\ApiTester $I, UserStep $u)
+    public function loginFailed(\ApiTester $I): void
     {
         $I->comment('---Not found User---');
         $I->sendPOST($this->url, ['email' => 'nouser@test.net', 'password' => 'failed']);
         $I->seeResponseCodeIs(HttpCode::NOT_FOUND);
 
         $I->comment('---Unauthorized---');
-        $user = $u->createDummyUser();
-        $I->sendPOST($this->url, ['email' => $user->getEmail(), 'password' => 'failed']);
+        $I->sendPOST($this->url, ['email' => UserStep::ADMIN_EMAIL, 'password' => 'failed']);
         $I->seeResponseCodeIs(HttpCode::UNAUTHORIZED);
         $I->seeResponseContainsJson(
             [

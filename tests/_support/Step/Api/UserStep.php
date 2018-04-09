@@ -9,12 +9,15 @@ use AppBundle\Entity\User;
  */
 class UserStep extends \ApiTester
 {
+    public const ADMIN_EMAIL = 'admin@example.net';
+    public const ADMIN_PASSWORD = 'admin';
+
     /**
      * @param string $email
      * @param string $password
      * @param string $phone
      */
-    public function createUser(string $email, string $password, string $phone)
+    public function createUser(string $email, string $password, string $phone): void
     {
         $this->haveInRepository(
             User::class,
@@ -32,7 +35,7 @@ class UserStep extends \ApiTester
     /**
      * @return User
      */
-    public function createDummyUser()
+    public function createDummyUser(): User
     {
         $this->createUser('dummy@test.net', '123456', '+841200000001');
 
@@ -47,13 +50,11 @@ class UserStep extends \ApiTester
     }
 
     /**
-     * @param User $user
-     *
      * @throws \Exception
      */
-    public function loginAs(User $user)
+    public function login(): void
     {
-        $this->sendPOST('/login.json', ['email' => $user->getEmail(), 'password' => $user->getPassword()]);
+        $this->sendPOST('/login.json', ['email' => self::ADMIN_EMAIL, 'password' => self::ADMIN_PASSWORD]);
         $token = $this->grabDataFromResponseByJsonPath('$.access_token');
         $this->amBearerAuthenticated($token[0]);
     }

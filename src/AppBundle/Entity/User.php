@@ -2,8 +2,8 @@
 
 namespace AppBundle\Entity;
 
-use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -41,7 +41,7 @@ class User extends BaseUser
     /**
      * @ORM\Column(type="string", length=1, options={"fixed": true})
      */
-    private $status;
+    private $status = self::STATUS_ACTIVE;
 
     /**
      * @ORM\Column(type="string", length=20, unique=true, nullable=true)
