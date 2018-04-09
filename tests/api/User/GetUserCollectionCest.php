@@ -1,18 +1,16 @@
 <?php
 
-namespace User;
-
 use AppBundle\Entity\User;
 use Codeception\Util\HttpCode;
 use Step\Api\UserStep;
 
 /**
- * GetUserCest.
+ * GetUserCollectionCest.
  */
-class GetUsersCest
+class GetUserCollectionCest
 {
     /**
-     * Users data.
+     * Dummy data.
      *
      * @var array
      */

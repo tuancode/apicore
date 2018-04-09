@@ -13,6 +13,7 @@ class UserStep extends \ApiTester
 {
     public const ADMIN_EMAIL = 'admin@example.net';
     public const ADMIN_PASSWORD = 'admin';
+    public const ADMIN_PHONE = '+841208667413';
 
     /**
      * @var JWTEncoderInterface
@@ -33,10 +34,12 @@ class UserStep extends \ApiTester
      * @param string $email
      * @param string $phone
      * @param string $status
+     *
+     * @return int
      */
-    public function createUser(string $email, string $phone, string $status): void
+    public function createUser(string $email, string $phone, string $status): int
     {
-        $this->haveInRepository(
+        return $this->haveInRepository(
             User::class,
             [
                 'username' => $email,

@@ -48,10 +48,9 @@ class RegisterCest
     }
 
     /**
-     * @param ApiTester          $I
-     * @param \Step\Api\UserStep $u
+     * @param ApiTester $I
      */
-    public function registerByInvalidEmail(\ApiTester $I, UserStep $u): void
+    public function registerByInvalidEmail(\ApiTester $I): void
     {
         $I->comment('---Blank Email---');
         $I->sendPOST($this->url, ['email' => '', 'password' => '123456', 'phone' => '+841208777245']);
@@ -72,8 +71,7 @@ class RegisterCest
         );
 
         $I->comment('---Duplicate Email---');
-        $user = $u->createDummyUser();
-        $I->sendPOST($this->url, ['email' => $user->getEmail(), 'password' => '123456', 'phone' => '+8412087215']);
+        $I->sendPOST($this->url, ['email' => UserStep::ADMIN_EMAIL, 'password' => '123456', 'phone' => '+8412087215']);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseContainsJson(
             [
@@ -100,10 +98,9 @@ class RegisterCest
     }
 
     /**
-     * @param ApiTester          $I
-     * @param \Step\Api\UserStep $u
+     * @param ApiTester $I
      */
-    public function registerByInvalidPhone(\ApiTester $I, UserStep $u): void
+    public function registerByInvalidPhone(\ApiTester $I): void
     {
         $I->comment('---Invalid Phone---');
         $I->sendPOST($this->url, ['email' => 'test@example.net', 'password' => '123456', 'phone' => '08777245']);
@@ -115,8 +112,10 @@ class RegisterCest
         );
 
         $I->comment('---Duplicate Phone---');
-        $user = $u->createDummyUser();
-        $I->sendPOST($this->url, ['email' => 'test@test.net', 'password' => '123456', 'phone' => $user->getPhone()]);
+        $I->sendPOST(
+            $this->url,
+            ['email' => 'test@test.net', 'password' => '123456', 'phone' => UserStep::ADMIN_PHONE]
+        );
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseContainsJson(
             [
