@@ -45,6 +45,9 @@ class UserFixture extends Fixture
         $admin->setPassword($this->encoder->encodePassword($admin, 'admin'));
         $admin->setEnabled(true);
 
-        $this->userRepository->save($admin);
+        // If user is not existed and valid, then create it
+        if (!$this->userRepository->findOneBy(['email' => $admin->getEmail()])) {
+            $this->userRepository->save($admin);
+        }
     }
 }

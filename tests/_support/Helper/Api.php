@@ -2,9 +2,8 @@
 
 namespace Helper;
 
-// here you can define custom actions
-// all public methods declared in helper class will be available in $I
 use Codeception\Module;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class Api.
@@ -16,9 +15,9 @@ class Api extends Module
      *
      * @throws \Codeception\Exception\ModuleException
      */
-    public function getContainer()
+    public function getContainer(): ContainerInterface
     {
-        // accessing container
-        return $this->getModule('Symfony')->container;
+        /* @noinspection PhpUndefinedFieldInspection */
+        return $this->getModule('Symfony')->kernel->getContainer();
     }
 }

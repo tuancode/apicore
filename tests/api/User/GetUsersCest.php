@@ -71,7 +71,7 @@ class GetUsersCest
      *
      * @throws \Exception
      */
-    public function getUsersSuccessWithoutPagination(\ApiTester $I, UserStep $u, Api $api): void
+    public function getUsersSuccessWithoutPagination(\ApiTester $I, UserStep $u): void
     {
         $u->login();
         foreach (static::$users as $index => $user) {

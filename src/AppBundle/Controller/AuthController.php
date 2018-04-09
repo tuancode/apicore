@@ -9,7 +9,7 @@ use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Request\ParamFetcher;
+use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\UserBundle\Model\UserInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
@@ -72,7 +72,7 @@ class AuthController extends FOSRestController implements ClassResourceInterface
      *
      * @Post("/login")
      *
-     * @param ParamFetcher                 $fetcher
+     * @param ParamFetcherInterface        $fetcher
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param JWTEncoderInterface          $jwtEncoder
      *
@@ -83,7 +83,7 @@ class AuthController extends FOSRestController implements ClassResourceInterface
      * @throws \Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTEncodeFailureException
      */
     public function loginAction(
-        ParamFetcher $fetcher,
+        ParamFetcherInterface $fetcher,
         UserPasswordEncoderInterface $passwordEncoder,
         JWTEncoderInterface $jwtEncoder
     ): array {

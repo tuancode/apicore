@@ -3,6 +3,8 @@
 namespace Step\Api;
 
 use AppBundle\Entity\User;
+use Helper\Api;
+use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 
 /**
  * User step.
@@ -11,6 +13,24 @@ class UserStep extends \ApiTester
 {
     public const ADMIN_EMAIL = 'admin@example.net';
     public const ADMIN_PASSWORD = 'admin';
+
+    /**
+     * @var JWTEncoderInterface
+     */
+    protected $jwtEncoder;
+
+    /**
+     * @param Api $api
+     *
+     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
+     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException
+     * @throws \Codeception\Exception\ModuleException
+     */
+    protected function _inject(Api $api): void
+    {
+        /* @noinspection MissingService */
+        $this->jwtEncoder = $api->getContainer()->get('lexik_jwt_authentication.encoder');
+    }
 
     /**
      * @param string $email
@@ -54,8 +74,12 @@ class UserStep extends \ApiTester
      */
     public function login(): void
     {
-        $this->sendPOST('/login.json', ['email' => self::ADMIN_EMAIL, 'password' => self::ADMIN_PASSWORD]);
-        $token = $this->grabDataFromResponseByJsonPath('$.access_token');
-        $this->amBearerAuthenticated($token[0]);
+        $token = $this->jwtEncoder->encode(
+            [
+                'username' => self::ADMIN_EMAIL,
+                'exp' => time() + 3600, // 1 hour expiration
+            ]
+        );
+        $this->amBearerAuthenticated($token);
     }
 }
