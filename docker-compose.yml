@@ -35,4 +35,4 @@ services:
             MYSQL_USER: apicore
             MYSQL_PASSWORD: apicore
         volumes:
-            - ./.docker/mysql/data:/var/lib/mysql:rw
+            - ./.docker/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d

@@ -50,7 +50,7 @@ log-prod:
 
 # Database management commands
 db-con:
-	@docker-compose exec mysql mysql -uapicore -papicore apicore
+	@docker-compose exec mysql mysql -uapicore -papicore
 
 
 # Open application commands
