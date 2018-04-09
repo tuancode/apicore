@@ -8,7 +8,7 @@ modules:
         - Doctrine2:
             depends: Symfony
             cleanup: true
-        - \Helper\Api
+        - \Helper\ServiceHelper
     config:
         - Symfony:
             app_path: 'app'

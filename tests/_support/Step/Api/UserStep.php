@@ -3,7 +3,7 @@
 namespace Step\Api;
 
 use AppBundle\Entity\User;
-use Helper\Api;
+use Helper\ServiceHelper;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 
 /**
@@ -20,33 +20,30 @@ class UserStep extends \ApiTester
     protected $jwtEncoder;
 
     /**
-     * @param Api $api
+     * @param ServiceHelper $service
      *
-     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
-     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException
      * @throws \Codeception\Exception\ModuleException
      */
-    protected function _inject(Api $api): void
+    protected function _inject(ServiceHelper $service): void
     {
-        /* @noinspection MissingService */
-        $this->jwtEncoder = $api->getContainer()->get('lexik_jwt_authentication.encoder');
+        $this->jwtEncoder = $service->getJwtEncoder();
     }
 
     /**
      * @param string $email
-     * @param string $password
      * @param string $phone
+     * @param string $status
      */
-    public function createUser(string $email, string $password, string $phone): void
+    public function createUser(string $email, string $phone, string $status): void
     {
         $this->haveInRepository(
             User::class,
             [
                 'username' => $email,
                 'email' => $email,
-                'plainPassword' => $password,
+                'plainPassword' => 123456,
                 'phone' => $phone,
-                'status' => User::STATUS_ACTIVE,
+                'status' => $status,
                 'enabled' => 1,
             ]
         );
@@ -57,7 +54,7 @@ class UserStep extends \ApiTester
      */
     public function createDummyUser(): User
     {
-        $this->createUser('dummy@test.net', '123456', '+841200000001');
+        $this->createUser('dummy@test.net', '+841200000001', User::STATUS_ACTIVE);
 
         $user = new User();
         $user->setEmail('dummy@test.net');
