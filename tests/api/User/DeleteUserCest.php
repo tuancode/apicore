@@ -7,8 +7,6 @@ use Tests\_support\Traits\AuthAwareTrait;
 
 /**
  * Class DeleteUserCest.
- *
- * @noinspection PhpUnusedPrivateMethodInspection
  */
 class DeleteUserCest
 {

@@ -7,8 +7,6 @@ use Tests\_support\Traits\AuthAwareTrait;
 
 /**
  * Class PutUserCest.
- *
- * @noinspection PhpUnusedPrivateMethodInspection
  */
 class PutUserCest
 {
