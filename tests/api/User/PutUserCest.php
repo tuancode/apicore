@@ -27,6 +27,17 @@ class PutUserCest
     ];
 
     /**
+     * Dummy data.
+     *
+     * @var array
+     */
+    private static $user = [
+        'email' => 'dummy@example.net',
+        'phone' => '+841200000003',
+        'status' => User::STATUS_ACTIVE,
+    ];
+
+    /**
      * Base url of cest.
      *
      * @var string
@@ -67,6 +78,7 @@ class PutUserCest
 
     /**
      * @before login
+     * @before createDummyUser
      *
      * @param ApiTester $I
      *
@@ -74,7 +86,7 @@ class PutUserCest
      */
     public function putUserByInvalidEmail(\ApiTester $I): void
     {
-        $user = $I->grabEntityFromRepository(User::class, ['email' => UserStep::ADMIN_EMAIL]);
+        $user = $I->grabEntityFromRepository(User::class, ['email' => self::$user['email']]);
 
         $I->comment('---Blank Email---');
         $I->sendPUT(
@@ -100,28 +112,28 @@ class PutUserCest
             ]
         );
 
-        // Fix later
-//        $I->comment('---Duplicate Email---');
-//        $I->sendPUT(
-//            sprintf($this->url, $user->getId()),
-//            ['email' => UserStep::ADMIN_EMAIL, 'phone' => '+8412000001', 'status' => 'A', 'enabled' => true]
-//        );
-//        $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
-//        $I->seeResponseContainsJson(
-//            [
-//                'email' => ['This value is already used.'],
-//            ]
-//        );
+        $I->comment('---Duplicate Email---');
+        $I->sendPUT(
+            sprintf($this->url, $user->getId()),
+            ['email' => UserStep::ADMIN_EMAIL, 'phone' => '+8412000001', 'status' => 'A', 'enabled' => true]
+        );
+        $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
+        $I->seeResponseContainsJson(
+            [
+                'email' => ['This value is already used.'],
+            ]
+        );
     }
 
     /**
      * @before login
+     * @before createDummyUser
      *
      * @param ApiTester $I
      */
     public function putUserByInvalidPhone(\ApiTester $I): void
     {
-        $user = $I->grabEntityFromRepository(User::class, ['email' => UserStep::ADMIN_EMAIL]);
+        $user = $I->grabEntityFromRepository(User::class, ['email' => self::$user['email']]);
 
         $I->comment('---Invalid Phone---');
         $I->sendPUT(
@@ -135,23 +147,22 @@ class PutUserCest
             ]
         );
 
-        // Fix later
-//        $I->comment('---Duplicate Phone---');
-//        $I->sendPUT(
-//            sprintf($this->url, $user->getId()),
-//            [
-//                'email' => 'test@test.net',
-//                'phone' => UserStep::ADMIN_PHONE,
-//                'status' => 'A',
-//                'enabled' => true,
-//            ]
-//        );
-//        $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
-//        $I->seeResponseContainsJson(
-//            [
-//                'phone' => ['This value is already used.'],
-//            ]
-//        );
+        $I->comment('---Duplicate Phone---');
+        $I->sendPUT(
+            sprintf($this->url, $user->getId()),
+            [
+                'email' => 'test@example.net',
+                'phone' => UserStep::ADMIN_PHONE,
+                'status' => User::STATUS_ACTIVE,
+                'enabled' => User::ENABLED,
+            ]
+        );
+        $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
+        $I->seeResponseContainsJson(
+            [
+                'phone' => ['This value is already used.'],
+            ]
+        );
     }
 
     /**
@@ -206,5 +217,13 @@ class PutUserCest
                 'enabled' => ['This value is not valid.'],
             ]
         );
+    }
+
+    /**
+     * @param UserStep $userStep
+     */
+    protected function createDummyUser(UserStep $userStep): void
+    {
+        $userStep->createUser(self::$user['email'], self::$user['phone'], self::$user['status']);
     }
 }
