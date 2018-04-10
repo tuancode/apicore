@@ -3,18 +3,14 @@
 use AppBundle\Entity\User;
 use Codeception\Util\HttpCode;
 use Step\Api\UserStep;
+use Tests\_support\Traits\AuthAwareTrait;
 
 /**
  * GetUserCest.
  */
 class GetUserCest
 {
-    /**
-     * Dummy data.
-     *
-     * @var array
-     */
-    private static $user = ['email' => 'dummy1@test.net', 'phone' => '+84120000001', 'status' => User::STATUS_ACTIVE];
+    use AuthAwareTrait;
 
     /**
      * Base url of cest.
@@ -34,22 +30,26 @@ class GetUserCest
     }
 
     /**
+     * @before login
+     *
      * @param ApiTester $I
-     * @param UserStep  $user
+     * @param UserStep  $userStep
      *
      * @throws Exception
      */
-    public function getUserSuccess(\ApiTester $I, UserStep $user): void
+    public function getUserSuccess(\ApiTester $I, UserStep $userStep): void
     {
-        $userId = $user->createUser(self::$user['email'], self::$user['phone'], self::$user['status']);
+        $example = ['email' => 'dummy1@test.net', 'phone' => +84120000001, 'status' => User::STATUS_ACTIVE];
+        $userId = $userStep->createUser($example['email'], $example['phone'], $example['status']);
 
-        $user->login();
         $I->sendGET(sprintf($this->url, $userId));
         $I->seeResponseCodeIs(HttpCode::OK);
-        $I->seeResponseContainsJson(self::$user);
+        $I->seeResponseContainsJson($example);
     }
 
     /**
+     * @before login
+     *
      * @param ApiTester $I
      * @param UserStep  $user
      *

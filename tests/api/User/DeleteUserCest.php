@@ -3,12 +3,17 @@
 use AppBundle\Entity\User;
 use Codeception\Util\HttpCode;
 use Step\Api\UserStep;
+use Tests\_support\Traits\AuthAwareTrait;
 
 /**
  * Class DeleteUserCest.
+ *
+ * @noinspection PhpUnusedPrivateMethodInspection
  */
 class DeleteUserCest
 {
+    use AuthAwareTrait;
+
     /**
      * Base url of cest.
      *
@@ -49,17 +54,5 @@ class DeleteUserCest
     {
         $I->sendDELETE(sprintf($this->url, 159753));
         $I->seeResponseCodeIs(HttpCode::NOT_FOUND);
-    }
-
-    /**
-     * Do login.
-     *
-     * @param UserStep $userStep
-     *
-     * @throws Exception
-     */
-    private function login(UserStep $userStep): void
-    {
-        $userStep->login();
     }
 }

@@ -3,6 +3,7 @@
 use AppBundle\Entity\User;
 use Codeception\Util\HttpCode;
 use Step\Api\UserStep;
+use Tests\_support\Traits\AuthAwareTrait;
 
 /**
  * Class PostUserCest.
@@ -11,6 +12,8 @@ use Step\Api\UserStep;
  */
 class PostUserCest
 {
+    use AuthAwareTrait;
+
     /**
      * Base url of cest.
      *
@@ -222,15 +225,5 @@ class PostUserCest
                 'enabled' => ['This value is not valid.'],
             ]
         );
-    }
-
-    /**
-     * @param UserStep $user
-     *
-     * @throws Exception
-     */
-    private function login(UserStep $user): void
-    {
-        $user->login();
     }
 }

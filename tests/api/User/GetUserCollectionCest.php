@@ -3,12 +3,15 @@
 use AppBundle\Entity\User;
 use Codeception\Util\HttpCode;
 use Step\Api\UserStep;
+use Tests\_support\Traits\AuthAwareTrait;
 
 /**
  * GetUserCollectionCest.
  */
 class GetUserCollectionCest
 {
+    use AuthAwareTrait;
+
     /**
      * Dummy data.
      *
@@ -37,19 +40,15 @@ class GetUserCollectionCest
     }
 
     /**
+     * @before login
+     * @before createDummyUsers
+     *
      * @param \ApiTester $I
-     * @param UserStep   $u
      *
      * @throws \Exception
      */
-    public function getUsersSuccess(\ApiTester $I, UserStep $u): void
+    public function getUsersSuccess(\ApiTester $I): void
     {
-        foreach (static::$users as $index => $user) {
-            $u->createUser($user['email'], $user['phone'], $user['status']);
-        }
-
-        $u->login();
-
         $I->comment('---With Pagination---');
         $I->sendGET($this->url);
         $I->seeResponseCodeIs(HttpCode::OK);
@@ -79,20 +78,17 @@ class GetUserCollectionCest
     }
 
     /**
+     * @before login
+     * @before createDummyUsers
+     *
      * @param \ApiTester $I
-     * @param UserStep   $u
      *
      * @throws \Exception
      */
-    public function getUsersFilteredByEmail(\ApiTester $I, UserStep $u): void
+    public function getUsersFilteredByEmail(\ApiTester $I): void
     {
-        foreach (static::$users as $index => $user) {
-            $u->createUser($user['email'], $user['phone'], $user['status']);
-        }
-
         $emailFilter = 'dummy1@test.net';
 
-        $u->login();
         $I->sendGET(sprintf('%s?pagination=0&filters[email]=%s', $this->url, $emailFilter));
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->seeResponseContainsJson(static::$users[0]);
@@ -100,20 +96,17 @@ class GetUserCollectionCest
     }
 
     /**
+     * @before login
+     * @before createDummyUsers
+     *
      * @param \ApiTester $I
-     * @param UserStep   $u
      *
      * @throws \Exception
      */
-    public function getUsersFilteredByPhone(\ApiTester $I, UserStep $u): void
+    public function getUsersFilteredByPhone(\ApiTester $I): void
     {
-        foreach (static::$users as $index => $user) {
-            $u->createUser($user['email'], $user['phone'], $user['status']);
-        }
-
         $phoneFilter = urlencode('+84120000001');
 
-        $u->login();
         $I->sendGET(sprintf('%s?pagination=0&filters[phone]=%s', $this->url, $phoneFilter));
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->seeResponseContainsJson(static::$users[0]);
@@ -121,20 +114,17 @@ class GetUserCollectionCest
     }
 
     /**
+     * @before login
+     * @before createDummyUsers
+     *
      * @param \ApiTester $I
-     * @param UserStep   $u
      *
      * @throws \Exception
      */
-    public function getUsersFilteredByStatus(\ApiTester $I, UserStep $u): void
+    public function getUsersFilteredByStatus(\ApiTester $I): void
     {
-        foreach (static::$users as $index => $user) {
-            $u->createUser($user['email'], $user['phone'], $user['status']);
-        }
-
         $statusFilter = 'A';
 
-        $u->login();
         $I->sendGET(sprintf('%s?pagination=0&filters[status]=%s', $this->url, $statusFilter));
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->seeResponseContainsJson(static::$users[0]);
@@ -142,26 +132,33 @@ class GetUserCollectionCest
     }
 
     /**
+     * @before login
+     * @before createDummyUsers
+     *
      * @param \ApiTester $I
-     * @param UserStep   $u
      *
      * @throws \Exception
      */
-    public function getUsersByCombinedFilters(\ApiTester $I, UserStep $u): void
+    public function getUsersByCombinedFilters(\ApiTester $I): void
     {
-        foreach (static::$users as $index => $user) {
-            $u->createUser($user['email'], $user['phone'], $user['status']);
-        }
-
         $emailFilter = 'dummy1@test.net';
         $statusFilter = 'A';
 
-        $u->login();
         $I->sendGET(
             sprintf('%s?pagination=0&filters[email]=%s&filters[status]=%s', $this->url, $emailFilter, $statusFilter)
         );
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->seeResponseContainsJson(static::$users[0]);
         $I->dontSeeResponseContainsJson(static::$users[1]);
+    }
+
+    /**
+     * @param UserStep $userStep
+     */
+    protected function createDummyUsers(UserStep $userStep): void
+    {
+        foreach (static::$users as $index => $user) {
+            $userStep->createUser($user['email'], $user['phone'], $user['status']);
+        }
     }
 }
