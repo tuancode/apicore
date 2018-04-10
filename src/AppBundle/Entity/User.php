@@ -59,6 +59,18 @@ class User extends BaseUser
     private $updatedDate;
 
     /**
+     * @param int $id
+     *
+     * @return User
+     */
+    public function setId($id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function setEmail($email)
