@@ -59,6 +59,17 @@ class User extends BaseUser
     private $updatedDate;
 
     /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->createdDate = new \DateTime();
+        $this->updatedDate = new \DateTime();
+    }
+
+    /**
      * @param int $id
      *
      * @return User
@@ -131,8 +142,6 @@ class User extends BaseUser
     }
 
     /**
-     * @ORM\PrePersist
-     *
      * @return User
      */
     public function setCreatedDate(): self
@@ -151,7 +160,6 @@ class User extends BaseUser
     }
 
     /**
-     * @ORM\PrePersist
      * @ORM\PreUpdate
      *
      * @return User
