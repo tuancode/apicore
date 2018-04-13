@@ -12,4 +12,5 @@ modules:
     config:
         - Symfony:
             app_path: 'app'
+            var_path: 'var'
             environment: 'test'

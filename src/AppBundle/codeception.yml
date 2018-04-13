@@ -1,11 +1,14 @@
 namespace: AppBundle
+actor: Tester
 paths:
     tests: Tests
     output: Tests/_output
     data: Tests/_data
     support: Tests/_support
     envs: Tests/_envs
-actor_suffix: Tester
+settings:
+    colors: true
+    memory_limit: 1024M
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
