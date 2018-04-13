@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity;
 
-use Codeception\Module\Symfony;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
